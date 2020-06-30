@@ -2,11 +2,11 @@
 Will test pid here
 """
 
-import PID
+from PID import PID
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.interpolate import BSpline, make_interp_spline
+from scipy.interpolate import make_interp_spline
 
 
 def test_pid(P=0.2, I=0, D=0):
