@@ -1,15 +1,16 @@
 """
-Creating PID loop in Python (Proportional, Integral Derivative)
-
-One PID loop will be for the x axis, and one will be for the y axis. These pid loops will execute independently of
-each other, with each one controlling one servo motor.
+PID loop in Python (Proportional, Integral Derivative)
 """
 
 import time
 
 
 class PID:
-    "PID Controller"
+    """
+    PID Controller
+    Takes in P, I and D parameters and current_time to create PID object. Continuously provide feedback through
+    the update() function and access PID.output for the output.
+    """
 
     def __init__(self, P=0.2, I=0.0, D=0.0, current_time=None):
         """Initialize PID object """
@@ -43,18 +44,16 @@ class PID:
 
         self.output = 0.0
 
-    def update(self, feedback_value, current_time=None):
-        """Will take in current error and calculate based off of it"""
+    def update(self, error, current_time=None):
+        """
+        Will take in current error as feedback_value and calculate based off of it the output.
+        """
 
-        error = self.setPoint - feedback_value  # How far from set point
-        print(feedback_value)
-        # Setting the time
         if current_time is not None:
             self.current_time = current_time
         else:
             self.current_time = time.time()
 
-        # print(self.last_time)
         delta_time = self.current_time - self.last_time
         delta_error = error - self.last_error
 
@@ -75,6 +74,10 @@ class PID:
             self.last_time = self.current_time
             self.last_error = error
             self.output = self.PTerm + (self.Ki * self.ITerm) + (self.Kd * self.DTerm)
+
+        # We can only move about 9 degrees, so output can't be larger than 9 degrees
+        if self.output > 9:
+            self.output = 9
 
     def setKp(self, proportional_gain):
         """Determines how aggressively the PID reacts to the current error with setting Proportional Gain"""
