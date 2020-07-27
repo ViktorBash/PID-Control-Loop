@@ -29,7 +29,7 @@ with open("csv_number.txt", "w") as file:
     file.write(str(new_number))
     file.close()
 
-with open(f"CSV Files/data_points.csv_{number}", "w", newline="") as new_file:
+with open("CSV Files/data_points.csv_" + str(number), "w", newline="") as new_file:
     csv_writer = csv.writer(new_file, delimiter=",")
 
     # Dummy code just to make sure writing to CSV file is working
