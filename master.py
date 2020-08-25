@@ -30,24 +30,23 @@ Take the output and send it to the thrust vector control system.
 """
 
 import time
+from imu_controller import run_imu_controller
 
-
-# Get and update the csv_number to write to the correct filename for no data loss
+# Get the current csv_number and update the csv_number to write to the correct filename for no data loss
 def find_update_csv_number():
-    with open("csv_number.txt", "r") as file:
+    with open("csv_number.txt", "r") as file:  # Get the number
         number = file.readlines()
         number = int(number[0])
-        csv_number = number
         file.close()
 
-    number_to_write = [str(number)]
-    with open("csv_number.txt", "w") as file:
+    with open("csv_number.txt", "w") as file: # Update it so we won't be written over
         new_number = number + 1
         file.write(str(new_number))
         file.close()
+    return number  # The number we will use to write data to
 
 
-find_update_csv_number()
+csv_number = find_update_csv_number()
 
 ground_idle = True
 power_flight = False
@@ -64,7 +63,7 @@ ACCEL_LEVEL = 1  # Acceleration level
 DEPLOY_CHUTE_ALTITUDE = 50
 STOPPED_ACCELERATION = 0.05
 
-acceleration = 2  # Get acceleration from IMU
+acceleration = 0  # Get acceleration from IMU
 
 
 # Loop before we enter power flight (ground idling at this point)
@@ -79,6 +78,10 @@ while ground_idle:
             time.sleep(SLEEP)
             continue
     else:
+        data = run_imu_controller()
+        print(
+            'Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
+                data[0], data[1], data[2], data[3], data[4], data[5], data[6]))
         time.sleep(SLEEP)
 
 

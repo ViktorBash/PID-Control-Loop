@@ -8,15 +8,42 @@ import time
 
 from Adafruit_BNO055 import BNO055
 
-
-# Create and configure the BNO sensor connection.  Make sure only ONE of the
-# below 'bno = ...' lines is uncommented:
-# Raspberry Pi configuration with serial UART and RST connected to GPIO 18:
+# Raspberry Pi configuration with serial UART
 bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
-# BeagleBone Black configuration with default I2C connection (SCL=P9_19, SDA=P9_20),
-# and RST connected to pin P9_12:
-# bno = BNO055.BNO055(rst='P9_12')
 
+
+def run_imu_controller():
+    # Read the Euler angles for heading, roll, pitch (all in degrees).
+    heading, roll, pitch = bno.read_euler()
+    # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
+    sys, gyro, accel, mag = bno.get_calibration_status()
+    # Print everything out.
+    # print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
+    #     heading, roll, pitch, sys, gyro, accel, mag))
+    # Other values you can optionally read:
+    # Orientation as a quaternion:
+    # x,y,z,w = bno.read_quaterion()
+    # Sensor temperature in degrees Celsius:
+    # temp_c = bno.read_temp()
+    # Magnetometer data (in micro-Teslas):
+    # x,y,z = bno.read_magnetometer()
+    # Gyroscope data (in degrees per second):
+    # x,y,z = bno.read_gyroscope()
+    # Accelerometer data (in meters per second squared):
+    # x,y,z = bno.read_accelerometer()
+    # Linear acceleration data (i.e. acceleration from movement, not gravity--
+    # returned in meters per second squared):
+    # x,y,z = bno.read_linear_acceleration()
+    # Gravity acceleration data (i.e. acceleration just from gravity--returned
+    # in meters per second squared):
+    # x,y,z = bno.read_gravity()
+    # Sleep for a second until the next reading.
+    return [heading, roll, pitch, sys, gyro, accel, mag]
+
+
+"""
+Unused code that may be valuable later
+"""
 
 # Enable verbose debug logging if -v is passed as a parameter.
 # if len(sys.argv) == 2 and sys.argv[1].lower() == '-v':
@@ -44,30 +71,30 @@ bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
 # print('Gyroscope ID:       0x{0:02X}\n'.format(gyro))
 #
 # print('Reading BNO055 data, press Ctrl-C to quit...')
-while True:
-    # Read the Euler angles for heading, roll, pitch (all in degrees).
-    heading, roll, pitch = bno.read_euler()
-    # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-    sys, gyro, accel, mag = bno.get_calibration_status()
-    # Print everything out.
-    print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-          heading, roll, pitch, sys, gyro, accel, mag))
-    # Other values you can optionally read:
-    # Orientation as a quaternion:
-    #x,y,z,w = bno.read_quaterion()
-    # Sensor temperature in degrees Celsius:
-    #temp_c = bno.read_temp()
-    # Magnetometer data (in micro-Teslas):
-    #x,y,z = bno.read_magnetometer()
-    # Gyroscope data (in degrees per second):
-    #x,y,z = bno.read_gyroscope()
-    # Accelerometer data (in meters per second squared):
-    #x,y,z = bno.read_accelerometer()
-    # Linear acceleration data (i.e. acceleration from movement, not gravity--
-    # returned in meters per second squared):
-    #x,y,z = bno.read_linear_acceleration()
-    # Gravity acceleration data (i.e. acceleration just from gravity--returned
-    # in meters per second squared):
-    #x,y,z = bno.read_gravity()
-    # Sleep for a second until the next reading.
-    time.sleep(1)
+# while True:
+#     # Read the Euler angles for heading, roll, pitch (all in degrees).
+#     heading, roll, pitch = bno.read_euler()
+#     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
+#     sys, gyro, accel, mag = bno.get_calibration_status()
+#     # Print everything out.
+#     print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
+#           heading, roll, pitch, sys, gyro, accel, mag))
+#     # Other values you can optionally read:
+#     # Orientation as a quaternion:
+#     #x,y,z,w = bno.read_quaterion()
+#     # Sensor temperature in degrees Celsius:
+#     #temp_c = bno.read_temp()
+#     # Magnetometer data (in micro-Teslas):
+#     #x,y,z = bno.read_magnetometer()
+#     # Gyroscope data (in degrees per second):
+#     #x,y,z = bno.read_gyroscope()
+#     # Accelerometer data (in meters per second squared):
+#     #x,y,z = bno.read_accelerometer()
+#     # Linear acceleration data (i.e. acceleration from movement, not gravity--
+#     # returned in meters per second squared):
+#     #x,y,z = bno.read_linear_acceleration()
+#     # Gravity acceleration data (i.e. acceleration just from gravity--returned
+#     # in meters per second squared):
+#     #x,y,z = bno.read_gravity()
+#     # Sleep for a second until the next reading.
+#     time.sleep(1)
