@@ -9,7 +9,8 @@ import busio
 import adafruit_bmp3xx
 
 # I2C setup
-i2c = busio.I2C(board.SCL, board.SDA)
+
+# i2c = busio.I2C(board.SCL, board.SDA)
 bmp = adafruit_bmp3xx.BMP3XX_I2C(i2c)
 
 
