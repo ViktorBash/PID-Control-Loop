@@ -32,6 +32,23 @@ Take the output and send it to the thrust vector control system.
 import time
 
 
+# Get and update the csv_number to write to the correct filename for no data loss
+def find_update_csv_number():
+    with open("csv_number.txt", "r") as file:
+        number = file.readlines()
+        number = int(number[0])
+        csv_number = number
+        file.close()
+
+    number_to_write = [str(number)]
+    with open("csv_number.txt", "w") as file:
+        new_number = number + 1
+        file.write(str(new_number))
+        file.close()
+
+
+find_update_csv_number()
+
 ground_idle = True
 power_flight = False
 unpowered_flight = False

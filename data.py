@@ -18,21 +18,20 @@ can store data from each flight effortlessly.
 
 import csv
 
-with open("csv_number.txt", "r") as file:
-    number = file.readlines()
-    number = int(number[0])
-    file.close()
 
-    # number_to_write = [str(number)]
-with open("csv_number.txt", "w") as file:
-    new_number = number + 1
-    file.write(str(new_number))
-    file.close()
+# data should be passed in as a list, csv_number as int
+def write_data_to_csv(data, csv_number):
 
-with open("CSV Files/data_points.csv_" + str(number), "w", newline="") as new_file:
-    csv_writer = csv.writer(new_file, delimiter=",")
+    with open("CSV Files/data_points.csv_" + str(csv_number), "a", newline="") as new_file:
+        csv_writer = csv.writer(new_file, delimiter=",")
+        csv_writer.writerow(list(data))
 
-    # Dummy code just to make sure writing to CSV file is working
-    for i in range(10):
-        csv_writer.writerow([i, i + 1, i - 5])
+        # Dummy code just to make sure writing to CSV file is working
+        # for i in range(10):
+        #     csv_writer.writerow([i, i + 1, i - 5])
 
+
+# Testing environment
+if __name__ == "__main__":
+    write_data_to_csv(["ree", "yee"], 1)
+    write_data_to_csv([1, 2, 3, 4, 69, 78], 2)
