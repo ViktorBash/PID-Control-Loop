@@ -2,17 +2,14 @@
 Will control the BNO055 IMU made for the Raspberry Pi
 """
 
-import logging
-import sys
-import time
 
 from Adafruit_BNO055 import BNO055
 
-# Raspberry Pi configuration with serial UART
-bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
-
 
 def run_imu_controller():
+    # Raspberry Pi configuration with serial UART
+    bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
+
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     heading, roll, pitch = bno.read_euler()
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
@@ -33,6 +30,7 @@ def run_imu_controller():
     # x,y,z = bno.read_linear_acceleration()
     # Gravity acceleration data (i.e. acceleration just from gravity returned in meters per second squared):
     # x,y,z = bno.read_gravity()
+
     return {
         # uncommented is currently unused but may be valuable later
         # "heading": heading,

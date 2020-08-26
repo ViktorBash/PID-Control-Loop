@@ -27,6 +27,8 @@ Control Flow: (Happening continuously)
 Get input from gyroscope connected to Pi, convert to degrees for X and Y.
 Put degrees into two PID objects for X and Y, get the output necessary (degrees).
 Take the output and send it to the thrust vector control system.
+
+TODO: Start using acceleration and other data to change between stages
 """
 
 import time
@@ -81,7 +83,7 @@ while ground_idle:
         else:
             time.sleep(SLEEP)
             continue
-    else:
+    else:  # We did not trigger next stage, read/write data
         imu_data_dict = run_imu_controller()
         barometer_data_dict = run_barometer()
 
@@ -105,7 +107,7 @@ while power_flight:
         else:
             time.sleep(SLEEP)
             continue
-    else:
+    else: # We did not trigger next stage, read/write data
         acceleration -= 1  # Remove later
         time.sleep(SLEEP)
 
@@ -117,7 +119,7 @@ while unpowered_flight:
         unpowered_flight = False
         ballistic_descent = True
         break
-    else:
+    else: # We did not trigger next stage, read/write data
         time.sleep(SLEEP)
 
 while ballistic_descent:
@@ -126,7 +128,7 @@ while ballistic_descent:
         ballistic_descent = False
         chute_descent = True
         break
-    else:
+    else: # We did not trigger next stage, read/write data
         time.sleep(WAIT)
 
 while chute_descent:
@@ -137,7 +139,7 @@ while chute_descent:
             chute_descent = False
             landing = True
             break
-    else:
+    else:  # We did not trigger next stage, read/write data
         acceleration -= 1  # Remove
         time.sleep(WAIT)
 
