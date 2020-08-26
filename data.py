@@ -24,7 +24,7 @@ import os
 def write_data_to_csv(data, csv_number):
 
     # If file does not exist yet, create it
-    if not os.path.isfile('/CSV Files/data_points.csv_' + str(csv_number)):
+    if not os.path.isfile('CSV Files/data_points.csv_' + str(csv_number)):
         with open("CSV Files/data_points.csv_" + str(csv_number), "w", newline="") as new_file:
             pass
             new_file.close()
