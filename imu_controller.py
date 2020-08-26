@@ -20,7 +20,7 @@ def run_imu_controller():
 
     # OTHER USEFUL VALUES
     # Orientation as a quaternion:
-    x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaterion()
+    x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaternion()
     # Sensor temperature in degrees Celsius:
     # temp_c = bno.read_temp()
     # Magnetometer data (in micro-Teslas):
