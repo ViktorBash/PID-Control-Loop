@@ -9,7 +9,10 @@ from Adafruit_BNO055 import BNO055
 def run_imu_controller():
     # Raspberry Pi configuration with serial UART
     bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
-    bno.begin()  # start the sensor
+    if not bno.begin():
+        raise RuntimeError('Failed to initialize BNO055! Is the sensor connected?')
+
+    status, self_test, error = bno.get_system_status()
 
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     heading, roll, pitch = bno.read_euler()
@@ -19,6 +22,7 @@ def run_imu_controller():
     # OTHER USEFUL VALUES
     # Orientation as a quaternion:
     x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaternion()
+    print("X QUAT " + x_quaternion)
     # Sensor temperature in degrees Celsius:
     # temp_c = bno.read_temp()
     # Magnetometer data (in micro-Teslas):
