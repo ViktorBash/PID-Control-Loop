@@ -88,9 +88,9 @@ while ground_idle:
         print(str(imu_data_dict))
         print(str(barometer_data_dict))
 
-        write_data_to_csv([str(datetime.datetime.now())])
-        write_data_to_csv([str(imu_data_dict)])
-        write_data_to_csv([str(barometer_data_dict)])
+        write_data_to_csv([str(datetime.datetime.now())], csv_number)
+        write_data_to_csv([str(imu_data_dict)], csv_number)
+        write_data_to_csv([str(barometer_data_dict)], csv_number)
 
         time.sleep(SLEEP)
 
