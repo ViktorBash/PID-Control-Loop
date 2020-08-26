@@ -9,6 +9,7 @@ from Adafruit_BNO055 import BNO055
 def run_imu_controller():
     # Raspberry Pi configuration with serial UART
     bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
+    bno.begin()  # start the sensor
 
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     heading, roll, pitch = bno.read_euler()
