@@ -17,10 +17,17 @@ can store data from each flight effortlessly.
 """
 
 import csv
+import os
 
 
 # data should be passed in as a list, csv_number as int
 def write_data_to_csv(data, csv_number):
+
+    # If file does not exist yet, create it
+    if not os.path.isfile('/CSV Files/data_points.csv_' + str(csv_number)):
+        with open("CSV Files/data_points.csv_" + str(csv_number), "w", newline="") as new_file:
+            pass
+            new_file.close()
 
     with open("CSV Files/data_points.csv_" + str(csv_number), "a", newline="") as new_file:
         csv_writer = csv.writer(new_file, delimiter=",")
