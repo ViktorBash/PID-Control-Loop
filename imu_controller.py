@@ -16,13 +16,11 @@ def run_imu_controller():
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     heading, roll, pitch = bno.read_euler()
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-    sys, gyro, accel, mag = bno.get_calibration_status()
-    # Print everything out.
-    # print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-    #     heading, roll, pitch, sys, gyro, accel, mag))
-    # Other values you can optionally read:
+    sys, gyro, acceleration, mag = bno.get_calibration_status()
+
+    # OTHER USEFUL VALUES
     # Orientation as a quaternion:
-    # x,y,z,w = bno.read_quaterion()
+    x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaterion()
     # Sensor temperature in degrees Celsius:
     # temp_c = bno.read_temp()
     # Magnetometer data (in micro-Teslas):
@@ -30,15 +28,27 @@ def run_imu_controller():
     # Gyroscope data (in degrees per second):
     # x,y,z = bno.read_gyroscope()
     # Accelerometer data (in meters per second squared):
-    # x,y,z = bno.read_accelerometer()
-    # Linear acceleration data (i.e. acceleration from movement, not gravity--
-    # returned in meters per second squared):
+    x_accelerometer, y_accelerometer, z_accelerometer = bno.read_accelerometer()
+    # Linear acceleration data (i.e. acceleration from movement, not gravity returned in meters per second squared):
     # x,y,z = bno.read_linear_acceleration()
-    # Gravity acceleration data (i.e. acceleration just from gravity--returned
-    # in meters per second squared):
+    # Gravity acceleration data (i.e. acceleration just from gravity returned in meters per second squared):
     # x,y,z = bno.read_gravity()
-    # Sleep for a second until the next reading.
-    return [heading, roll, pitch, sys, gyro, accel, mag]
+    return {
+        "heading": heading,
+        "roll": roll,
+        "pitch": pitch,
+        "sys": sys,
+        "gyro": gyro,
+        "acceleration": acceleration,
+        "mag": mag,
+        "x_quaternion": x_quaternion,
+        "y_quaternion": y_quaternion,
+        "z_quaternion": z_quaternion,
+        "w_quaternion": w_quaternion,
+        "x_accelerometer": x_accelerometer,
+        "y_accelerometer": y_accelerometer,
+        "z_accelerometer": z_accelerometer,
+    }
 
 
 """

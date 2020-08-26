@@ -79,12 +79,14 @@ while ground_idle:
             time.sleep(SLEEP)
             continue
     else:
-        data = run_imu_controller()
-        print(
-            'Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-                data[0], data[1], data[2], data[3], data[4], data[5], data[6]))
-        data_2 = run_barometer()
-        print("Pressure " + str(data_2[0]) + ", temperature C: " + str(data_2[1]))
+        imu_data_dict = run_imu_controller()
+        print(str(imu_data_dict))
+        # print(
+        #     'Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
+        #         data[0], data[1], data[2], data[3], data[4], data[5], data[6]))
+        barometer_data_dict = run_barometer()
+        # print("Pressure " + str(data_2[0]) + ", temperature C: " + str(data_2[1]))
+        print(str(barometer_data_dict))
         time.sleep(SLEEP)
 
 

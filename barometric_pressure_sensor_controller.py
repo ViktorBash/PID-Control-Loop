@@ -17,5 +17,8 @@ def run_barometer():
 
     bmp.pressure_oversampling = 8
     bmp.temperature_oversampling = 2
-    return [bmp.pressure, bmp.temperature]
-
+    return {
+        "pressure": bmp.pressure,
+        "temperature": bmp.temperature,
+        "altitude": bmp.altitude,
+    }
