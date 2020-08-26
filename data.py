@@ -24,10 +24,11 @@ import os
 def write_data_to_csv(data, csv_number):
 
     # If file does not exist yet, create it
-    if not os.path.isfile('CSV Files/data_points.csv_' + str(csv_number)):
-        with open("CSV Files/data_points.csv_" + str(csv_number), "w", newline="") as new_file:
-            pass
-            new_file.close()
+    filename = 'CSV Files/data_points.csv_' + str(csv_number)
+    if not os.path.isfile(filename):
+        print("NO FILE, making it right now")
+        with open("CSV Files/data_points.csv_" + str(csv_number), "w", newline="") as temp_file:
+            temp_file.close()
 
     with open("CSV Files/data_points.csv_" + str(csv_number), "a", newline="") as new_file:
         csv_writer = csv.writer(new_file, delimiter=",")
