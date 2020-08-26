@@ -30,8 +30,11 @@ Take the output and send it to the thrust vector control system.
 """
 
 import time
+import datetime
 from imu_controller import run_imu_controller
 from barometric_pressure_sensor_controller import run_barometer
+from data import write_data_to_csv
+
 
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
 def find_update_csv_number():
@@ -80,13 +83,15 @@ while ground_idle:
             continue
     else:
         imu_data_dict = run_imu_controller()
-        print(str(imu_data_dict))
-        # print(
-        #     'Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-        #         data[0], data[1], data[2], data[3], data[4], data[5], data[6]))
         barometer_data_dict = run_barometer()
-        # print("Pressure " + str(data_2[0]) + ", temperature C: " + str(data_2[1]))
+
+        print(str(imu_data_dict))
         print(str(barometer_data_dict))
+
+        write_data_to_csv([str(datetime.datetime.now())])
+        write_data_to_csv([str(imu_data_dict)])
+        write_data_to_csv([str(barometer_data_dict)])
+
         time.sleep(SLEEP)
 
 

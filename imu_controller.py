@@ -34,13 +34,14 @@ def run_imu_controller():
     # Gravity acceleration data (i.e. acceleration just from gravity returned in meters per second squared):
     # x,y,z = bno.read_gravity()
     return {
-        "heading": heading,
-        "roll": roll,
-        "pitch": pitch,
-        "sys": sys,
-        "gyro": gyro,
-        "acceleration": acceleration,
-        "mag": mag,
+        # uncommented is currently unused but may be valuable later
+        # "heading": heading,
+        # "roll": roll,
+        # "pitch": pitch,
+        # "sys": sys,
+        # "gyro": gyro,
+        # "acceleration": acceleration,
+        # "mag": mag,
         "x_quaternion": x_quaternion,
         "y_quaternion": y_quaternion,
         "z_quaternion": z_quaternion,
