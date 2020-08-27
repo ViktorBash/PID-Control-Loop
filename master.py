@@ -64,7 +64,7 @@ landing = False
 
 # Time: seconds, acceleration/altitude: meters
 WAIT = 0.5
-SLEEP = 0.01
+SLEEP = 0.5
 ACCEL_LEVEL = 1  # Acceleration level
 DEPLOY_CHUTE_ALTITUDE = 50
 STOPPED_ACCELERATION = 0.05
@@ -87,10 +87,16 @@ while ground_idle:
         imu_data_dict = run_imu_controller()
         barometer_data_dict = run_barometer()
 
-        print(str(imu_data_dict))
-        print(str(barometer_data_dict))
-        if imu_data_dict['x_quaternion'] > 0:
-            print("X QUAT GREATER THAN 0 IN MASTER.py")
+        print("X QUAT:")
+        print(imu_data_dict['x_quaternion'])
+        print("Y QUAT: ")
+        print(imu_data_dict['y_quaternion'])
+        print("Z QUAT: ")
+        print(imu_data_dict['z_quaternion'])
+        print("Y QUAT: ")
+        print(imu_data_dict['w_quaternion'])
+        print("HEADING")
+        print(imu_data_dict['heading'])
 
         write_data_to_csv([str(datetime.datetime.now())], csv_number)
         write_data_to_csv([str(imu_data_dict)], csv_number)

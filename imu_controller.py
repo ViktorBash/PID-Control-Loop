@@ -22,9 +22,7 @@ def run_imu_controller():
     # OTHER USEFUL VALUES
     # Orientation as a quaternion:
     x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaternion()
-    if x_quaternion > 0:
-        print("X QUAT GREATER THAN 0")
-    print("X QUAT " + str(x_quaternion))
+
     # Sensor temperature in degrees Celsius:
     # temp_c = bno.read_temp()
     # Magnetometer data (in micro-Teslas):
@@ -40,13 +38,13 @@ def run_imu_controller():
 
     return {
         # uncommented is currently unused but may be valuable later
-        # "heading": heading,
-        # "roll": roll,
-        # "pitch": pitch,
-        # "sys": sys,
-        # "gyro": gyro,
-        # "acceleration": acceleration,
-        # "mag": mag,
+        "heading": heading,
+        "roll": roll,
+        "pitch": pitch,
+        "sys": sys,
+        "gyro": gyro,
+        "acceleration": acceleration,
+        "mag": mag,
         "x_quaternion": x_quaternion,
         "y_quaternion": y_quaternion,
         "z_quaternion": z_quaternion,
