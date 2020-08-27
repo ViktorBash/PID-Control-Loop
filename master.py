@@ -84,25 +84,87 @@ while ground_idle:
             time.sleep(SLEEP)
             continue
     else:  # We did not trigger next stage, read/write data
-        imu_data_dict = run_imu_controller()
-        barometer_data_dict = run_barometer()
+        import sys
+        import logging
+        from Adafruit_BNO055 import BNO055
 
-        print("X QUAT:")
-        print(imu_data_dict['x_quaternion'])
-        print("Y QUAT: ")
-        print(imu_data_dict['y_quaternion'])
-        print("Z QUAT: ")
-        print(imu_data_dict['z_quaternion'])
-        print("Y QUAT: ")
-        print(imu_data_dict['w_quaternion'])
-        print("HEADING")
-        print(imu_data_dict['heading'])
+        # Raspberry Pi configuration with serial UART
+        bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
 
-        write_data_to_csv([str(datetime.datetime.now())], csv_number)
-        write_data_to_csv([str(imu_data_dict)], csv_number)
-        write_data_to_csv([str(barometer_data_dict)], csv_number)
+        # Enable verbose debug logging if -v is passed as a parameter.
+        if len(sys.argv) == 2 and sys.argv[1].lower() == '-v':
+            logging.basicConfig(level=logging.DEBUG)
 
-        time.sleep(SLEEP)
+        if not bno.begin():
+            raise RuntimeError('Failed to initialize BNO055! Is the sensor connected?')
+
+        status, self_test, error = bno.get_system_status()
+        print('System status: {0}'.format(status))
+        print('Self test result (0x0F is normal): 0x{0:02X}'.format(self_test))
+        # Print out an error if system status is in error mode.
+        if status == 0x01:
+            print('System error: {0}'.format(error))
+            print('See datasheet section 4.3.59 for the meaning.')
+
+        # Read the Euler angles for heading, roll, pitch (all in degrees).
+        heading, roll, pitch = bno.read_euler()
+        # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
+        sys, gyro, acceleration, mag = bno.get_calibration_status()
+
+        # OTHER USEFUL VALUES
+        # Orientation as a quaternion:
+        x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaternion()
+
+        # Sensor temperature in degrees Celsius:
+        # temp_c = bno.read_temp()
+        # Magnetometer data (in micro-Teslas):
+        # x,y,z = bno.read_magnetometer()
+        # Gyroscope data (in degrees per second):
+        # x,y,z = bno.read_gyroscope()
+        # Accelerometer data (in meters per second squared):
+        x_accelerometer, y_accelerometer, z_accelerometer = bno.read_accelerometer()
+        # Linear acceleration data (i.e. acceleration from movement, not gravity returned in meters per second squared):
+        # x,y,z = bno.read_linear_acceleration()
+        # Gravity acceleration data (i.e. acceleration just from gravity returned in meters per second squared):
+        # x,y,z = bno.read_gravity()
+        print(x_quaternion)
+        data = {
+            # uncommented is currently unused but may be valuable later
+            "heading": heading,
+            "roll": roll,
+            "pitch": pitch,
+            "sys": sys,
+            "gyro": gyro,
+            "acceleration": acceleration,
+            "mag": mag,
+            "x_quaternion": x_quaternion,
+            "y_quaternion": y_quaternion,
+            "z_quaternion": z_quaternion,
+            "w_quaternion": w_quaternion,
+            "x_accelerometer": x_accelerometer,
+            "y_accelerometer": y_accelerometer,
+            "z_accelerometer": z_accelerometer,
+        }
+        print(data)
+        # imu_data_dict = run_imu_controller()
+        # barometer_data_dict = run_barometer()
+        #
+        # print("X QUAT:")
+        # print(imu_data_dict['x_quaternion'])
+        # print("Y QUAT: ")
+        # print(imu_data_dict['y_quaternion'])
+        # print("Z QUAT: ")
+        # print(imu_data_dict['z_quaternion'])
+        # print("Y QUAT: ")
+        # print(imu_data_dict['w_quaternion'])
+        # print("HEADING")
+        # print(imu_data_dict['heading'])
+        #
+        # write_data_to_csv([str(datetime.datetime.now())], csv_number)
+        # write_data_to_csv([str(imu_data_dict)], csv_number)
+        # write_data_to_csv([str(barometer_data_dict)], csv_number)
+        #
+        # time.sleep(SLEEP)
 
 
 while power_flight:
