@@ -22,6 +22,8 @@ def run_imu_controller():
     # OTHER USEFUL VALUES
     # Orientation as a quaternion:
     x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaternion()
+    if x_quaternion > 0:
+        print("X QUAT GREATER THAN 0")
     print("X QUAT " + str(x_quaternion))
     # Sensor temperature in degrees Celsius:
     # temp_c = bno.read_temp()

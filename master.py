@@ -89,6 +89,8 @@ while ground_idle:
 
         print(str(imu_data_dict))
         print(str(barometer_data_dict))
+        if imu_data_dict['x_quaternion'] > 0:
+            print("X QUAT GREATER THAN 0 IN MASTER.py")
 
         write_data_to_csv([str(datetime.datetime.now())], csv_number)
         write_data_to_csv([str(imu_data_dict)], csv_number)
