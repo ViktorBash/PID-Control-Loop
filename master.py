@@ -127,16 +127,15 @@ imu_data = {
 
 # Loop before we enter power flight (ground idling at this point)
 while ground_idle:
-    average_acceleration = None
+    average_acceleration = 0
     try:
         average_acceleration = imu_data['x_accelerometer'] + imu_data['y_accelerometer'] + imu_data['z_accelerometer']
         average_acceleration = average_acceleration / 3
     except TypeError:
         pass
 
-    if average_acceleration:
-        print("AVERAGE ACCELERATION")
-        print(average_acceleration)
+    print("AVERAGE ACCELERATION")
+    print(average_acceleration)
 
     if average_acceleration >= ACCEL_LEVEL:  # Check acceleration
         time.sleep(WAIT)
