@@ -150,15 +150,15 @@ while ground_idle:
     get_average_acceleration()
 
     print("AVERAGE ACCELERATION")
-    print(imu_data['average_acceleration'])
+    print(other_variables['average_acceleration'])
 
-    if abs(imu_data['average_acceleration'] - imu_data['past_average_acceleration']) >= ACCEL_LEVEL or check_again:  # Check acceleration
+    if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL or check_again:  # Check acceleration
         if not check_again:
             check_again = True
             continue
         time.sleep(WAIT)
 
-        if abs(imu_data['average_acceleration'] - imu_data['past_average_acceleration']) >= ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
+        if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
             check_again = False
             ground_idle = False
             power_flight = True
