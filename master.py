@@ -140,42 +140,27 @@ def get_average_acceleration():
     return
 
 
-
 # STAGES OF FLIGHT
-
-
 # Loop before we enter power flight (ground idling at this point)
-check_again = False
 while ground_idle:
     get_average_acceleration()
 
-    print("AVERAGE ACCELERATION")
-    print(other_variables['average_acceleration'])
-    print("PAST AVERAGE ACCELERATION")
-    print(other_variables['past_average_acceleration'])
+    # Check if acceleration changed (first check)
+    if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:
 
-    if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL or check_again:  # Check acceleration
-        # print("FIRST CHECK")
-        # print(check_again)
-        # if not check_again:
-        #     check_again = True
-        #     continue
-        print("FIRST CHECK SUCCESS")
+        print("GROUND IDLE FIRST CHECK SUCCESS")
+        # Wait, then get acceleration and check if it changed again
         time.sleep(WAIT)
         imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
         get_average_acceleration()
-        print("AVERAGE ACCELERATION")
-        print(other_variables['average_acceleration'])
-        print("PAST AVERAGE ACCELERATION")
-        print(other_variables['past_average_acceleration'])
-        if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
-            check_again = False
+
+        # Check again after waiting to make sure it's not a fluke and that the acceleration has changed
+        if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:
             ground_idle = False
             power_flight = True
-            print("MOVING TO NEXT STAGE")
+            print("MOVING TO NEXT POWER FLIGHT FROM GROUND IDLE")
             break
         else:
-            check_again = False
             time.sleep(SLEEP)
             continue
     else:  # We did not trigger next stage, read/write data
@@ -205,24 +190,6 @@ while ground_idle:
 
         # Gravity we will be using to check against
         imu_data['x_gravity'], imu_data['y_gravity'], imu_data['z_gravity'] = bno.read_gravity()
-
-        # imu_data = {
-        #     # uncommented is currently unused but may be valuable later
-        #     "heading": heading,
-        #     "roll": roll,
-        #     "pitch": pitch,
-        #     "sys": sys,
-        #     "gyro": gyro,
-        #     "acceleration": acceleration,
-        #     "mag": mag,
-        #     "x_quaternion": x_quaternion,
-        #     "y_quaternion": y_quaternion,
-        #     "z_quaternion": z_quaternion,
-        #     "w_quaternion": w_quaternion,
-        #     "x_accelerometer": x_accelerometer,
-        #     "y_accelerometer": y_accelerometer,
-        #     "z_accelerometer": z_accelerometer,
-        # }
 
         barometric_data = run_barometer()
         # print(barometric_data)
