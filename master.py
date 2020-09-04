@@ -198,20 +198,75 @@ while ground_idle:
         # print(imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'])
         time.sleep(SLEEP)
 
-
 while power_flight:
-    if acceleration < ACCEL_LEVEL:  # Check acceleration
+    get_average_acceleration()
+
+    # Check if acceleration changed (first check)
+    if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:
+
+        print("GROUND IDLE FIRST CHECK SUCCESS")
+        # Wait, then get acceleration and check if it changed again
         time.sleep(WAIT)
-        if acceleration < ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
+        imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
+        get_average_acceleration()
+
+        # Check again after waiting to make sure it's not a fluke and that the acceleration has changed
+        if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:
             power_flight = False
             unpowered_flight = True
+            print("MOVING TO NEXT POWER FLIGHT FROM GROUND IDLE")
             break
         else:
             time.sleep(SLEEP)
             continue
-    else: # We did not trigger next stage, read/write data
-        acceleration -= 1  # Remove later
+    else:  # We did not trigger next stage, read/write data
+        # print("blank")
+        # heading, roll, pitch = bno.read_euler()
+        imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
+        # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
+        # sys, gyro, acceleration, mag = bno.get_calibration_status()
+        imu_data['sys'], imu_data['gyro'], imu_data['acceleration'], imu_data['mag'] = bno.get_calibration_status()
+        # OTHER USEFUL VALUES
+        # Orientation as a quaternion:
+        # x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaternion()
+        imu_data['x_quaternion'], imu_data['y_quaternion'], imu_data['z_quaternion'], imu_data['w_quaternion'] = bno.read_quaternion()
+
+        # Sensor temperature in degrees Celsius:
+        # temp_c = bno.read_temp()
+        # Magnetometer data (in micro-Teslas):
+        # x,y,z = bno.read_magnetometer()
+        # Gyroscope data (in degrees per second):
+        # x,y,z = bno.read_gyroscope()
+        # Accelerometer data (in meters per second squared):
+        # x_accelerometer, y_accelerometer, z_accelerometer = bno.read_accelerometer()
+        imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
+        # Linear acceleration data (i.e. acceleration from movement, not gravity returned in meters per second squared):
+        # x,y,z = bno.read_linear_acceleration()
+        # Gravity acceleration data (i.e. acceleration just from gravity returned in meters per second squared):
+
+        # Gravity we will be using to check against
+        imu_data['x_gravity'], imu_data['y_gravity'], imu_data['z_gravity'] = bno.read_gravity()
+
+        barometric_data = run_barometer()
+        # print(barometric_data)
+        # print(imu_data)
+        # print("X, Y, Z acceleration")
+        # print(imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'])
         time.sleep(SLEEP)
+
+# while power_flight:
+#     if acceleration < ACCEL_LEVEL:  # Check acceleration
+#         time.sleep(WAIT)
+#         if acceleration < ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
+#             power_flight = False
+#             unpowered_flight = True
+#             break
+#         else:
+#             time.sleep(SLEEP)
+#             continue
+#     else:  # We did not trigger next stage, read/write data
+#         acceleration -= 1  # Remove later
+#         time.sleep(SLEEP)
 
 while unpowered_flight:
     altitude = 100  # Get altitude from barometer
