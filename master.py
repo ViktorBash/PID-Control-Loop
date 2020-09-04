@@ -155,6 +155,8 @@ while ground_idle:
     print(other_variables['past_average_acceleration'])
 
     if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL or check_again:  # Check acceleration
+        print("FIRST CHECK")
+        print(check_again)
         if not check_again:
             check_again = True
             continue
@@ -220,7 +222,7 @@ while ground_idle:
         # print(barometric_data)
         # print(imu_data)
         # print("X, Y, Z acceleration")
-        print(imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'])
+        # print(imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'])
         time.sleep(SLEEP)
 
 
