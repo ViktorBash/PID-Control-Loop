@@ -201,26 +201,26 @@ while ground_idle:
 while power_flight:
     get_average_acceleration()
 
-    # Check if acceleration changed (first check)
-    if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:
+    # Check if acceleration has fallen more than the accel level
+    if other_variables['past_average_acceleration'] - other_variables['average_acceleration'] >= ACCEL_LEVEL:
 
-        print("GROUND IDLE FIRST CHECK SUCCESS")
+        print("POWER FLIGHT FIRST CHECK SUCCESS, ACCEL FALLEN")
         # Wait, then get acceleration and check if it changed again
         time.sleep(WAIT)
         imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
         get_average_acceleration()
 
         # Check again after waiting to make sure it's not a fluke and that the acceleration has changed
-        if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:
+        if other_variables['past_average_acceleration'] - other_variables['average_acceleration'] >= ACCEL_LEVEL:
             power_flight = False
             unpowered_flight = True
-            print("MOVING TO NEXT POWER FLIGHT FROM GROUND IDLE")
+            print("MOVING TO UNPOWERED FLIGHT FROM POWER FLIGHT")
             break
         else:
             time.sleep(SLEEP)
             continue
     else:  # We did not trigger next stage, read/write data
-        # print("blank")
+
         # heading, roll, pitch = bno.read_euler()
         imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
         # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
