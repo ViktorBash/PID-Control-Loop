@@ -155,13 +155,19 @@ while ground_idle:
     print(other_variables['past_average_acceleration'])
 
     if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL or check_again:  # Check acceleration
-        print("FIRST CHECK")
-        print(check_again)
-        if not check_again:
-            check_again = True
-            continue
+        # print("FIRST CHECK")
+        # print(check_again)
+        # if not check_again:
+        #     check_again = True
+        #     continue
+        print("FIRST CHECK SUCCESS")
         time.sleep(WAIT)
-
+        imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
+        get_average_acceleration()
+        print("AVERAGE ACCELERATION")
+        print(other_variables['average_acceleration'])
+        print("PAST AVERAGE ACCELERATION")
+        print(other_variables['past_average_acceleration'])
         if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
             check_again = False
             ground_idle = False
