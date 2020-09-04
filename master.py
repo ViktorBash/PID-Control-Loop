@@ -28,6 +28,9 @@ Get input from gyroscope connected to Pi, convert to degrees for X and Y.
 Put degrees into two PID objects for X and Y, get the output necessary (degrees).
 Take the output and send it to the thrust vector control system.
 
+TODO: Get more variables from imu
+TODO: Get barometric code into master.py and also as global dict
+TODO: Write to CSV with actual commas/properly formatted (imu data, barometric data, timestamp)
 TODO: Start using acceleration and other data to change between stages
 """
 
@@ -124,11 +127,16 @@ imu_data = {
 
 # Loop before we enter power flight (ground idling at this point)
 while ground_idle:
-    if acceleration >= ACCEL_LEVEL:  # Check acceleration
+    average_acceleration = imu_data['x_accelerometer'] + imu_data['y_accelerometer'] + imu_data['z_accelerometer']
+    average_acceleration = average_acceleration / 3
+    print("AVERAGE ACCELERATION")
+    print(average_acceleration)
+    if average_acceleration >= ACCEL_LEVEL:  # Check acceleration
         time.sleep(WAIT)
-        if acceleration >= ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
+        if average_acceleration >= ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
             ground_idle = False
             power_flight = True
+            print("MOVING TO NEXT STAGE")
             break
         else:
             time.sleep(SLEEP)
@@ -157,6 +165,8 @@ while ground_idle:
         # Linear acceleration data (i.e. acceleration from movement, not gravity returned in meters per second squared):
         # x,y,z = bno.read_linear_acceleration()
         # Gravity acceleration data (i.e. acceleration just from gravity returned in meters per second squared):
+
+        # Gravity we will be using to check against
         imu_data['x_gravity'], imu_data['y_gravity'], imu_data['z_gravity'] = bno.read_gravity()
 
         # imu_data = {
@@ -179,7 +189,9 @@ while ground_idle:
 
         barometric_data = run_barometer()
         print(barometric_data)
-        print(imu_data)
+        # print(imu_data)
+        print("X, Y, Z acceleration")
+        print(imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'])
         time.sleep(SLEEP)
 
 
