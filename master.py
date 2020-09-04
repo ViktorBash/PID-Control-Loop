@@ -122,29 +122,50 @@ imu_data = {
             'z_gravity': None,
         }
 
+other_variables = {
+    "average_acceleration": 0,
+    "past_average_acceleration": 0
+}
 
-# STAGES OF FLIGHT
 
-# Loop before we enter power flight (ground idling at this point)
-while ground_idle:
-    average_acceleration = 0
+# Function to get average acceleration
+def get_average_acceleration():
     try:
         average_acceleration = imu_data['x_accelerometer'] + imu_data['y_accelerometer'] + imu_data['z_accelerometer']
         average_acceleration = average_acceleration / 3
-    except TypeError:
+        other_variables['past_average_acceleration'] = other_variables['average_acceleration']
+        other_variables['average_acceleration'] = average_acceleration
+    except Exception as e:
         pass
+    return
+
+
+
+# STAGES OF FLIGHT
+
+
+# Loop before we enter power flight (ground idling at this point)
+check_again = False
+while ground_idle:
+    get_average_acceleration()
 
     print("AVERAGE ACCELERATION")
-    print(average_acceleration)
+    print(imu_data['average_acceleration'])
 
-    if average_acceleration >= ACCEL_LEVEL:  # Check acceleration
+    if abs(imu_data['average_acceleration'] - imu_data['past_average_acceleration']) >= ACCEL_LEVEL or check_again:  # Check acceleration
+        if not check_again:
+            check_again = True
+            continue
         time.sleep(WAIT)
-        if average_acceleration >= ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
+
+        if abs(imu_data['average_acceleration'] - imu_data['past_average_acceleration']) >= ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
+            check_again = False
             ground_idle = False
             power_flight = True
             print("MOVING TO NEXT STAGE")
             break
         else:
+            check_again = False
             time.sleep(SLEEP)
             continue
     else:  # We did not trigger next stage, read/write data
