@@ -41,7 +41,7 @@ import sys
 import logging
 from Adafruit_BNO055 import BNO055
 import time
-
+from datetime import datetime
 
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
 def find_update_csv_number():
@@ -192,10 +192,26 @@ while ground_idle:
         imu_data['x_gravity'], imu_data['y_gravity'], imu_data['z_gravity'] = bno.read_gravity()
 
         barometric_data = run_barometer()
-        # print(barometric_data)
-        # print(imu_data)
-        # print("X, Y, Z acceleration")
-        # print(imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'])
+        cur_time = datetime.now()
+        write_data_to_csv([imu_data['heading'],
+                           imu_data['roll'],
+                           imu_data['pitch'],
+                           imu_data['sys'],
+                           imu_data['gyro'],
+                           imu_data['acceleration'],
+                           imu_data['mag'],
+                           imu_data['x_quaternion'],
+                           imu_data['y_quaternion'],
+                           imu_data['z_quaternion'],
+                           imu_data['w_quaternion'],
+                           imu_data['x_accelerometer'],
+                           imu_data['y_accelerometer'],
+                           imu_data['z_accelerometer'],
+                           imu_data['x_gravity'],
+                           imu_data['y_gravity'],
+                           imu_data['z_gravity'],
+                           cur_time,
+                           ], csv_number)
         time.sleep(SLEEP)
 
 while power_flight:
@@ -254,19 +270,6 @@ while power_flight:
         # print(imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'])
         time.sleep(SLEEP)
 
-# while power_flight:
-#     if acceleration < ACCEL_LEVEL:  # Check acceleration
-#         time.sleep(WAIT)
-#         if acceleration < ACCEL_LEVEL:  # Check again after waiting to make sure it's not a fluke
-#             power_flight = False
-#             unpowered_flight = True
-#             break
-#         else:
-#             time.sleep(SLEEP)
-#             continue
-#     else:  # We did not trigger next stage, read/write data
-#         acceleration -= 1  # Remove later
-#         time.sleep(SLEEP)
 
 while unpowered_flight:
     altitude = 100  # Get altitude from barometer
@@ -276,7 +279,7 @@ while unpowered_flight:
         unpowered_flight = False
         ballistic_descent = True
         break
-    else: # We did not trigger next stage, read/write data
+    else:  # We did not trigger next stage, read/write data
         time.sleep(SLEEP)
 
 while ballistic_descent:
