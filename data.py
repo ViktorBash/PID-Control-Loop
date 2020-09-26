@@ -29,11 +29,13 @@ def write_data_to_csv(data, csv_number):
         with open("CSV Files/data_points.csv_" + str(csv_number), "w", newline="") as temp_file:
             csv_writer = csv.writer(temp_file, delimiter=",")
             csv_writer.writerow(
-                ["heading", "roll", "pitch", "sys", "gyro", "acceleration", "mag", "x_quat", "y_quat", "z_quat",
-                 "w_quat", "x_accel", "y_accel", "z_accel", "x_grav", "y_grav", "z_grav", "cur_time"])
+                ["timestamp", "heading", "roll", "pitch", "sys", "gyro", "acceleration", "mag", "x_quat", "y_quat",
+                 "z_quat", "w_quat", "x_accel", "y_accel", "z_accel", "x_grav", "y_grav", "z_grav", "pressure",
+                 "temperature", "altitude"
+                 ])
             temp_file.close()
 
     # The file exists, so we just append to it our data
     with open("CSV Files/data_points.csv_" + str(csv_number), "a", newline="") as new_file:
         csv_writer = csv.writer(new_file, delimiter=",")
-        csv_writer.writerow(list(data))
+        csv_writer.writerow(data)
