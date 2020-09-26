@@ -106,7 +106,7 @@ if status == 0x01:
 # Calibrating the IMU
 print("CALIBRATION VALUES BEFORE (sys, gyro, accel, mag): ")
 print(bno.get_calibration_status())
-bno.set_calibration(bno.get_calibration_status())
+bno.set_calibration(bno.get_calibration())
 
 # CONFIGURATION OF BAROMETRIC CONTROLLER
 i2c = busio.I2C(board.SCL, board.SDA)
