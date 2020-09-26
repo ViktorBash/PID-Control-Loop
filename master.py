@@ -103,6 +103,10 @@ if status == 0x01:
     print('System error: {0}'.format(error))
     print('See datasheet section 4.3.59 for the meaning.')
 
+# Calibrating the IMU
+print("CALIBRATION VALUES BEFORE (sys, gyro, accel, mag): ")
+print(bno.get_calibration_status())
+bno.set_calibration(bno.get_calibration_status())
 
 # CONFIGURATION OF BAROMETRIC CONTROLLER
 i2c = busio.I2C(board.SCL, board.SDA)
