@@ -75,7 +75,7 @@ landing = False
 
 # Time: seconds, acceleration/altitude: meters
 WAIT = 0.5
-SLEEP = 0.5
+SLEEP = 0.01
 ACCEL_LEVEL = 1  # Acceleration level
 DEPLOY_CHUTE_ALTITUDE = 50
 STOPPED_ACCELERATION = 0.05
