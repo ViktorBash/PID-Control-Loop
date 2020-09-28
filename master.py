@@ -45,6 +45,8 @@ from Adafruit_BNO055 import BNO055
 import time
 from datetime import datetime
 
+import RPi.GPIO as GPIO
+
 
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
 def find_update_csv_number():
@@ -110,6 +112,12 @@ i2c = busio.I2C(board.SCL, board.SDA)
 bmp = adafruit_bmp3xx.BMP3XX_I2C(i2c)
 bmp.pressure_oversampling = 8
 bmp.temperature_oversampling = 2
+
+# CONFIGURATION OF BUZZER
+buzzer_pin = 11
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(buzzer_pin, GPIO.OUT)
+GPIO.output(buzzer_pin, GPIO.HIGH)
 
 # IMU Dict
 imu_data = {
@@ -246,6 +254,7 @@ while ground_idle:
         time.sleep(SLEEP)
 
 while power_flight:
+    GPIO.output(buzzer_pin, GPIO.LOW)
     get_average_acceleration()
 
     # Check if acceleration has fallen more than the accel level
