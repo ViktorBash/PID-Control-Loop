@@ -3,11 +3,10 @@
 """
 import RPi.GPIO as GPIO
 # Setup
-buzzer_pin = 7
+buzzer_pin = 17
 GPIO.setmode(GPIO.BCM)
-# GPIO.setmode(GPIO.BCM)
 GPIO.setup(buzzer_pin, GPIO.OUT)
-# GPIO.output(buzzer_pin, GPIO.LOW)
+GPIO.output(buzzer_pin, GPIO.HIGH)
 
 
 # Low
