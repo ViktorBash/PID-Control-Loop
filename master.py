@@ -46,7 +46,7 @@ import time
 from datetime import datetime
 
 import RPi.GPIO as GPIO
-
+import buzzer_code
 
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
 def find_update_csv_number():
@@ -114,10 +114,11 @@ bmp.pressure_oversampling = 8
 bmp.temperature_oversampling = 2
 
 # CONFIGURATION OF BUZZER
-buzzer_pin = 11
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(buzzer_pin, GPIO.OUT)
-GPIO.output(buzzer_pin, GPIO.HIGH)
+# buzzer_pin = 11
+# GPIO.setmode(GPIO.BOARD)
+# GPIO.setup(buzzer_pin, GPIO.OUT)
+# GPIO.output(buzzer_pin, GPIO.HIGH)
+buzzer_code.low()
 
 # IMU Dict
 imu_data = {
@@ -254,7 +255,8 @@ while ground_idle:
         time.sleep(SLEEP)
 
 while power_flight:
-    GPIO.output(buzzer_pin, GPIO.LOW)
+    # GPIO.output(buzzer_pin, GPIO.LOW)
+    buzzer_code.high()
     get_average_acceleration()
 
     # Check if acceleration has fallen more than the accel level
