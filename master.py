@@ -28,9 +28,6 @@ Get input from gyroscope connected to Pi, convert to degrees for X and Y.
 Put degrees into two PID objects for X and Y, get the output necessary (degrees).
 Take the output and send it to the thrust vector control system.
 
-TODO: Get barometric code into master.py and also as global dict
-TODO: Write to CSV with actual commas/properly formatted (imu data, barometric data, timestamp)
-TODO: Start using acceleration and other data to change between stages
 """
 
 
