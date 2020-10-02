@@ -48,6 +48,7 @@ from datetime import datetime
 import RPi.GPIO as GPIO
 import buzzer_code
 
+
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
 def find_update_csv_number():
     with open("csv_number.txt", "r") as file:  # Get the number
@@ -170,89 +171,20 @@ def get_average_acceleration():
     return
 
 
+# Setup for the button that will arm the rocket
+button_pin = 13
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
 # STAGES OF FLIGHT
 # Loop before we enter power flight (ground idling at this point)
 while ground_idle:
-    get_average_acceleration()
+    buzzer_code.low()
 
-    # Check if acceleration changed (first check)
-    if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:
-
-        print("GROUND IDLE FIRST CHECK SUCCESS")
-        # Wait, then get acceleration and check if it changed again
-        time.sleep(WAIT)
-        imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
-        get_average_acceleration()
-
-        # Check again after waiting to make sure it's not a fluke and that the acceleration has changed
-        if abs(other_variables['average_acceleration'] - other_variables['past_average_acceleration']) >= ACCEL_LEVEL:
-            ground_idle = False
-            power_flight = True
-            print("MOVING TO NEXT POWER FLIGHT FROM GROUND IDLE")
-            break
-        else:
-            time.sleep(SLEEP)
-            continue
-    else:  # We did not trigger next stage, read/write data
-        # print("blank")
-        # heading, roll, pitch = bno.read_euler()
-        imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
-        # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-        # sys, gyro, acceleration, mag = bno.get_calibration_status()
-        imu_data['sys'], imu_data['gyro'], imu_data['acceleration'], imu_data['mag'] = bno.get_calibration_status()
-        # OTHER USEFUL VALUES
-        # Orientation as a quaternion:
-        # x_quaternion, y_quaternion, z_quaternion, w_quaternion = bno.read_quaternion()
-        imu_data['x_quaternion'], imu_data['y_quaternion'], imu_data['z_quaternion'], imu_data['w_quaternion'] = bno.read_quaternion()
-
-        # Sensor temperature in degrees Celsius:
-        # temp_c = bno.read_temp()
-        # Magnetometer data (in micro-Teslas):
-        # x,y,z = bno.read_magnetometer()
-        # Gyroscope data (in degrees per second):
-        # x,y,z = bno.read_gyroscope()
-        # Accelerometer data (in meters per second squared):
-        # x_accelerometer, y_accelerometer, z_accelerometer = bno.read_accelerometer()
-        imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
-        # Linear acceleration data (i.e. acceleration from movement, not gravity returned in meters per second squared):
-        # x,y,z = bno.read_linear_acceleration()
-        # Gravity acceleration data (i.e. acceleration just from gravity returned in meters per second squared):
-
-        # Gravity we will be using to check against
-        imu_data['x_gravity'], imu_data['y_gravity'], imu_data['z_gravity'] = bno.read_gravity()
-
-        barometric_dict = {
-            "pressure": bmp.pressure,
-            "temperature": bmp.temperature,
-            "altitude": bmp.altitude,
-        }
-
-        timestamp = datetime.now()
-
-        write_data_to_csv([
-            timestamp,
-            imu_data['heading'],
-            imu_data['roll'],
-            imu_data['pitch'],
-            imu_data['sys'],
-            imu_data['gyro'],
-            imu_data['acceleration'],
-            imu_data['mag'],
-            imu_data['x_quaternion'],
-            imu_data['y_quaternion'],
-            imu_data['z_quaternion'],
-            imu_data['w_quaternion'],
-            imu_data['x_accelerometer'],
-            imu_data['y_accelerometer'],
-            imu_data['z_accelerometer'],
-            imu_data['x_gravity'],
-            imu_data['y_gravity'],
-            imu_data['z_gravity'],
-            barometric_dict['pressure'],
-            barometric_dict['temperature'],
-            barometric_dict['altitude'],
-                           ], csv_number)
-        time.sleep(SLEEP)
+    # if GPIO.input(button_pin) == GPIO.HIGH:
+    #     ground_idle = False
+    #     power_flight = True
+    #     print("BUTTON PRESSED - GOING TO POWERED FLIGHT")
 
 while power_flight:
     # GPIO.output(buzzer_pin, GPIO.LOW)

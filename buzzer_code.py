@@ -2,6 +2,7 @@
 
 """
 import RPi.GPIO as GPIO
+import time
 # Setup
 buzzer_pin = 17
 GPIO.setmode(GPIO.BCM)
@@ -12,6 +13,8 @@ GPIO.output(buzzer_pin, GPIO.HIGH)
 # Low
 def low():
     GPIO.output(buzzer_pin, GPIO.HIGH)
+    time.sleep(2)
+    GPIO.cleanup()
 
 
 # high
