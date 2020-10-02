@@ -75,7 +75,8 @@ class PID:
             self.last_error = error
             self.output = self.PTerm + (self.Ki * self.ITerm) + (self.Kd * self.DTerm)
 
-        # We can only move about 9 degrees, so output can't be larger than 9 degrees
+        # We can only move about 9 degrees, so output can't be larger than 9 degrees (NEED TO MULTIPLY
+        # THIS NUMBER BY PROPORTIONAL GAIN)
         if self.output > 9:
             self.output = 9
 
