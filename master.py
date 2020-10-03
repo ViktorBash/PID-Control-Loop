@@ -85,7 +85,7 @@ acceleration = 0  # Get acceleration from IMU
 # CONFIGURATION FOR IMU CONTROLLER
 
 # Raspberry Pi configuration with serial UART
-bno = BNO055.BNO055(serial_port='/dev/serial0', rst=18)
+bno = BNO055.BNO055(serial_port='/dev/serial0', rst=12)
 
 # Enable verbose debug logging if -v is passed as a parameter.
 if len(sys.argv) == 2 and sys.argv[1].lower() == '-v':
@@ -253,7 +253,7 @@ while ballistic_descent:
         ballistic_descent = False
         chute_descent = True
         break
-    else: # We did not trigger next stage, read/write data
+    else:  # We did not trigger next stage, read/write data
         time.sleep(WAIT)
 
 while chute_descent:
