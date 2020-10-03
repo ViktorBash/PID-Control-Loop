@@ -119,7 +119,7 @@ bmp.temperature_oversampling = 2
 # GPIO.setmode(GPIO.BOARD)
 # GPIO.setup(buzzer_pin, GPIO.OUT)
 # GPIO.output(buzzer_pin, GPIO.HIGH)
-buzzer_code.low()
+# buzzer_code.low()
 
 # IMU Dict
 imu_data = {
