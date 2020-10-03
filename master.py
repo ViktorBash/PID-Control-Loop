@@ -180,11 +180,13 @@ def get_average_acceleration():
 # Loop before we enter power flight (ground idling at this point)
 
 buzzer_pin = 17
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(buzzer_pin, GPIO.OUT)
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setup(buzzer_pin, GPIO.OUT)
 # GPIO.output(buzzer_pin, GPIO.HIGH)
 
 while ground_idle:
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(buzzer_pin, GPIO.OUT)
     GPIO.output(buzzer_pin, GPIO.HIGH)
     time.sleep(1)
     GPIO.cleanup()
