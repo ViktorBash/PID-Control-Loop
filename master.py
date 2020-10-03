@@ -172,9 +172,9 @@ def get_average_acceleration():
 
 
 # Setup for the button that will arm the rocket
-button_pin = 13
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# button_pin = 13
+# GPIO.setmode(GPIO.BOARD)
+# GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # STAGES OF FLIGHT
 # Loop before we enter power flight (ground idling at this point)
