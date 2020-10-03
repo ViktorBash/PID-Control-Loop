@@ -106,18 +106,7 @@ if status == 0x01:
 print("CALIBRATION VALUES BEFORE (sys, gyro, accel, mag): ")
 print(bno.get_calibration_status())
 
-time.sleep(0.5)
-bno_error = False
-try:
-    bno.set_calibration(bno.get_calibration())
-except RuntimeError:
-    try:
-        bno.set_calibration(bno.get_calibration())
-    except RuntimeError:
-        bno_error = True
-
-if bno_error:
-    bno.set_calibration(bno.get_calibration())
+bno.set_calibration(bno.get_calibration())
 
 
 # CONFIGURATION OF BAROMETRIC CONTROLLER
@@ -200,17 +189,16 @@ while ground_idle:
     GPIO.cleanup(buzzer_pin)
     time.sleep(1)
 
-    # Check if the button has been pressed
-
+    # Check if the button has been pressed, if it has go to the next stage
     if GPIO.input(button_pin) == GPIO.HIGH:
-        print("BUTTON PUSHED")
+        power_flight = True
+        ground_idle = False
+        print("BUTTON PRESSED - GOING TO POWERED FLIGHT")
 
-    print("buzz")
-
-    # if GPIO.input(button_pin) == GPIO.HIGH:
-    #     ground_idle = False
-    #     power_flight = True
-    #     print("BUTTON PRESSED - GOING TO POWERED FLIGHT")
+# Cleanup the button and setup the buzzer to play a loud sound continuously now
+GPIO.cleanup(button_pin)
+GPIO.setup(buzzer_pin, GPIO.OUT)
+GPIO.setup(buzzer_pin, GPIO.LOW)
 
 while power_flight:
     # GPIO.output(buzzer_pin, GPIO.LOW)
