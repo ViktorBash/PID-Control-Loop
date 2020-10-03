@@ -46,7 +46,7 @@ import time
 from datetime import datetime
 
 import RPi.GPIO as GPIO
-import buzzer_code
+# import buzzer_code
 
 
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
@@ -178,8 +178,18 @@ def get_average_acceleration():
 
 # STAGES OF FLIGHT
 # Loop before we enter power flight (ground idling at this point)
+
+buzzer_pin = 17
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(buzzer_pin, GPIO.out)
+# GPIO.output(buzzer_pin, GPIO.HIGH)
+
 while ground_idle:
-    buzzer_code.low()
+    GPIO.output(buzzer_pin, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(buzzer_pin, GPIO.LOW)
+    time.sleep(1)
+    print("buzz")
 
     # if GPIO.input(button_pin) == GPIO.HIGH:
     #     ground_idle = False
