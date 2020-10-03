@@ -46,7 +46,6 @@ import time
 from datetime import datetime
 
 import RPi.GPIO as GPIO
-# import buzzer_code
 
 
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
@@ -114,12 +113,6 @@ bmp = adafruit_bmp3xx.BMP3XX_I2C(i2c)
 bmp.pressure_oversampling = 8
 bmp.temperature_oversampling = 2
 
-# CONFIGURATION OF BUZZER
-# buzzer_pin = 11
-# GPIO.setmode(GPIO.BOARD)
-# GPIO.setup(buzzer_pin, GPIO.OUT)
-# GPIO.output(buzzer_pin, GPIO.HIGH)
-# buzzer_code.low()
 
 # IMU Dict
 imu_data = {
@@ -179,18 +172,26 @@ def get_average_acceleration():
 # STAGES OF FLIGHT
 # Loop before we enter power flight (ground idling at this point)
 
-buzzer_pin = 17
-# GPIO.setmode(GPIO.BCM)
-# GPIO.setup(buzzer_pin, GPIO.OUT)
-# GPIO.output(buzzer_pin, GPIO.HIGH)
+buzzer_pin = 17  # For BCM
+button_pin = 27  # For BCM (13=27)
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 while ground_idle:
+    # Run the buzzer (set it up, buz, turn off, destroy, then repeat)
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(buzzer_pin, GPIO.OUT)
     GPIO.output(buzzer_pin, GPIO.HIGH)
     time.sleep(1)
-    GPIO.cleanup()
+    GPIO.cleanup(buzzer_pin)
     time.sleep(1)
+
+    # Check if the button has been pressed
+
+    if GPIO.input(button_pin) == GPIO.HIGH:
+        print("BUTTON PUSHED")
+
     print("buzz")
 
     # if GPIO.input(button_pin) == GPIO.HIGH:
@@ -200,7 +201,6 @@ while ground_idle:
 
 while power_flight:
     # GPIO.output(buzzer_pin, GPIO.LOW)
-    buzzer_code.high()
     get_average_acceleration()
 
     # Check if acceleration has fallen more than the accel level
