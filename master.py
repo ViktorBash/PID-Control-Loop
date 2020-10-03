@@ -181,7 +181,7 @@ def get_average_acceleration():
 
 buzzer_pin = 17
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(buzzer_pin, GPIO.out)
+GPIO.setup(buzzer_pin, GPIO.OUT)
 # GPIO.output(buzzer_pin, GPIO.HIGH)
 
 while ground_idle:
