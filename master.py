@@ -187,7 +187,7 @@ GPIO.setup(buzzer_pin, GPIO.OUT)
 while ground_idle:
     GPIO.output(buzzer_pin, GPIO.HIGH)
     time.sleep(1)
-    GPIO.output(buzzer_pin, GPIO.LOW)
+    GPIO.cleanup()
     time.sleep(1)
     print("buzz")
 
