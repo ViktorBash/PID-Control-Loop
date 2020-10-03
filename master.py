@@ -180,7 +180,7 @@ GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 while ground_idle:
     # Run the buzzer (set it up, buz, turn off, destroy, then repeat)
-    GPIO.setmode(GPIO.BCM)
+    # GPIO.setmode(GPIO.BCM)
     GPIO.setup(buzzer_pin, GPIO.OUT)
     GPIO.output(buzzer_pin, GPIO.HIGH)
     time.sleep(1)
