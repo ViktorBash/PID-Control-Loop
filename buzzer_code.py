@@ -15,6 +15,7 @@ def low():
     GPIO.output(buzzer_pin, GPIO.HIGH)
     time.sleep(2)
     GPIO.cleanup()
+    time.sleep(2)
 
 
 # high
