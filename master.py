@@ -105,7 +105,20 @@ if status == 0x01:
 # Calibrating the IMU
 print("CALIBRATION VALUES BEFORE (sys, gyro, accel, mag): ")
 print(bno.get_calibration_status())
-bno.set_calibration(bno.get_calibration())
+
+time.sleep(0.5)
+bno_error = False
+try:
+    bno.set_calibration(bno.get_calibration())
+except RuntimeError:
+    try:
+        bno.set_calibration(bno.get_calibration())
+    except RuntimeError:
+        bno_error = True
+
+if bno_error:
+    bno.set_calibration(bno.get_calibration())
+
 
 # CONFIGURATION OF BAROMETRIC CONTROLLER
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -181,10 +194,10 @@ GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 while ground_idle:
     # Run the buzzer (set it up, buz, turn off, destroy, then repeat)
     # GPIO.setmode(GPIO.BCM)
-    # GPIO.setup(buzzer_pin, GPIO.OUT)
-    # GPIO.output(buzzer_pin, GPIO.HIGH)
-    # time.sleep(1)
-    # GPIO.cleanup(buzzer_pin)
+    GPIO.setup(buzzer_pin, GPIO.OUT)
+    GPIO.output(buzzer_pin, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.cleanup(buzzer_pin)
     time.sleep(1)
 
     # Check if the button has been pressed
