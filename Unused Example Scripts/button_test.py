@@ -1,3 +1,8 @@
+"""
+Code to detect input on a button via GPIO
+
+NOT USED ANYMORE
+"""
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 

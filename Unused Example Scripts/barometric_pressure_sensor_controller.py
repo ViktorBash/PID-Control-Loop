@@ -1,6 +1,7 @@
 """
 Controller for the barometric pressure sensor (BMP388).
 
+NOT USED ANYMORE
 """
 
 import time

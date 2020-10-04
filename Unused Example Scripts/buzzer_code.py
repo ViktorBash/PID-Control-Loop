@@ -1,5 +1,7 @@
 """
+Code to control an active buzzer via GPIO
 
+NOT USED ANYMORE
 """
 import RPi.GPIO as GPIO
 import time
