@@ -1,19 +1,8 @@
 """
-Script to collect data in all stages of the flight.
-Data that will be collected will be put into a csv file:
-    -Location
-    -Altitude
-    -to be determined
-
-Need to create an iterable object in order to record data in the CSV format
-We will be using a list as the iterable object
-
-First we read csv_number.txt and find the number.
-Then we write the number + 1 to the csv_number.txt file
-Then we create a CSV file with the number in the name and write whatever we want
-
-This system ensures that all the CSV files have names in ascending order so we
-can store data from each flight effortlessly.
+Script to that has a function to write data to a CSV file.
+write_data_to_csv() is called with a csv number and either writes to a new file or appends to an existing one the data
+it is given. It then closes. This ensures that if the rocket breaks at some point that all the data leading up to that
+point will still be written to the CSV file.
 """
 
 import csv
@@ -22,10 +11,11 @@ import os
 
 # data should be passed in as a list, csv_number as int
 def write_data_to_csv(data, csv_number):
-    # If file does not exist yet, create it but write nothing to it
+    # If file does not exist yet, create it
     filename = 'CSV Files/data_points_' + str(csv_number) + '.csv'
     if not os.path.isfile(filename):
         print("NO FILE, making it right now. Also adding header ")
+        # The file doesn't exist so we make it and write to it + add a header at the top
         with open("CSV Files/data_points_" + str(csv_number) + ".csv", "w", newline="") as temp_file:
             csv_writer = csv.writer(temp_file, delimiter=",")
             csv_writer.writerow(
