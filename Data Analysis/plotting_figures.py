@@ -1,26 +1,37 @@
 """
-This script will plot data from the CSV files and save it as PNG using matplotlib.
+This script plots data from a CSV file and saves all the figures as PDFs and PNGs.
 
-TODO:
-    -Plot x accel, y accel, z accel
-    -Plot x grav, y grav, z grav
-    - Change font
-    -Change window title
-    -Change color
-    -Change x axis (time) to show seconds rounded
+TODO: Change x axis (time) to show seconds rounded
+
+HOW TO CUSTOMIZE GRAPHS:
+
+For a custom color when plotting data:
+    plt.plot(data["timestamp"], data[key], 'c')
+The "c" is a color, there are a plethora of color codes here:
+https://matplotlib.org/3.1.0/gallery/color/named_colors.html
+
+For a custom font for any text:
+    font = {'family': 'serif',
+        'color':  'darkred',
+        'weight': 'normal',
+        'size': 16,
+        }
+    plt.title("Graph of " + key + " for CSV data " + csv_file_number, fontdict=font)
+Use fontdict=. This can be done for title, labels, etc
 """
 
-# matplotlib for plotting, pandas for working with the CSV file, numpy later on for the line of best fit
+
+# matplotlib for plotting, pandas for working with the CSV file
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import style
-import datetime
+
+
 # Get correct CSV file from user
 csv_file_number = input("Enter the number of the csv file you want to analyze: ")
 data = pd.read_csv("../CSV Files/data_points_" + str(csv_file_number) + ".csv")
 
-# Units will be added and each ting that will be plotted will also have the label ere to get
+# This dict will help to create unique labels for the graphs
 labels = {"heading": "Heading",
           "roll": "Roll",
           "pitch": "Pitch",
@@ -39,6 +50,7 @@ labels = {"heading": "Heading",
           "altitude": "Altitude",
           }
 
+# Matplotlib plot style
 style.use("ggplot")
 
 # Iterate through the labels dict to plot everything in the dict (only 2 variables: time and y)
@@ -50,6 +62,7 @@ for key in labels:
     plt.ylabel(labels[key])
     plt.savefig(key + "_data_" + csv_file_number + ".png")
     plt.savefig(key + "_data_" + csv_file_number + ".pdf")
+
 
 # Plot all 3 euler angles together
 cur_plot = plt.figure(len(labels) + 1)
@@ -84,6 +97,7 @@ plt.legend()
 plt.show()
 plt.savefig("all_accel_data_" + csv_file_number + ".png")
 plt.savefig("all_accel_data_" + csv_file_number + ".pdf")
+
 
 # Plot all gravities together
 cur_plot = plt.figure(len(labels) + 4)
