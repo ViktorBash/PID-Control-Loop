@@ -15,11 +15,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import style
-
+import datetime
 # Get correct CSV file from user
 csv_file_number = input("Enter the number of the csv file you want to analyze: ")
-data = pd.read_csv("../CSV Files/data_points.csv_" + csv_file_number)
-# print(data)
+data = pd.read_csv("../CSV Files/data_points_" + str(csv_file_number) + ".csv")
 
 # Units will be added and each ting that will be plotted will also have the label ere to get
 labels = {"heading": "Heading",
