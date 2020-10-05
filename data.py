@@ -23,10 +23,10 @@ import os
 # data should be passed in as a list, csv_number as int
 def write_data_to_csv(data, csv_number):
     # If file does not exist yet, create it but write nothing to it
-    filename = 'CSV Files/data_points.csv_' + str(csv_number)
+    filename = 'CSV Files/data_points_' + str(csv_number) + '.csv'
     if not os.path.isfile(filename):
         print("NO FILE, making it right now. Also adding header ")
-        with open("CSV Files/data_points.csv_" + str(csv_number), "w", newline="") as temp_file:
+        with open("CSV Files/data_points_" + str(csv_number) + ".csv", "w", newline="") as temp_file:
             csv_writer = csv.writer(temp_file, delimiter=",")
             csv_writer.writerow(
                 ["timestamp", "heading", "roll", "pitch", "sys", "gyro", "acceleration", "mag", "x_quat", "y_quat",
@@ -36,6 +36,6 @@ def write_data_to_csv(data, csv_number):
             temp_file.close()
 
     # The file exists, so we just append to it our data
-    with open("CSV Files/data_points.csv_" + str(csv_number), "a", newline="") as new_file:
+    with open("CSV Files/data_points_" + str(csv_number) + ".csv", "a", newline="") as new_file:
         csv_writer = csv.writer(new_file, delimiter=",")
         csv_writer.writerow(data)
