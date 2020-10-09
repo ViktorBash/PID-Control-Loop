@@ -272,6 +272,7 @@ while unpowered_flight:
     if cur_altitude < altitude:  # We are falling now if true
         unpowered_flight = False
         ballistic_descent = True
+        print("MOVING TO BALLISTIC DESCENT FROM UNPOWERED FLIGHT")
         break
     else:  # We did not trigger next stage, read/write data
         imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
@@ -320,6 +321,7 @@ while ballistic_descent:
     if para_altitude <= DEPLOY_CHUTE_ALTITUDE:
         ballistic_descent = False
         chute_descent = True
+        print("MOVING TO CHUTE DESCENT FROM BALLISTIC DESCENT")
         break
     else:  # We did not trigger next stage, read/write data
         imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
@@ -371,6 +373,7 @@ while chute_descent:
         if acceleration <= STOPPED_ACCELERATION:
             chute_descent = False
             landing = True
+            print("MOVING TO LANDING :D")
             break
     else:  # We did not trigger next stage, read/write data
         imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
