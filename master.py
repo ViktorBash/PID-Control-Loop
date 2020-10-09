@@ -78,6 +78,7 @@ SLEEP = 0.01
 ACCEL_LEVEL = 1  # Acceleration level
 DEPLOY_CHUTE_ALTITUDE = 50
 STOPPED_ACCELERATION = 0.05
+CHUTE_DESCENT_WAIT = 0.5  # How much to wait until we check the acceleration again to transition to chute descent
 
 acceleration = 0  # Get acceleration from IMU
 
@@ -257,15 +258,15 @@ while ballistic_descent:
         time.sleep(WAIT)
 
 while chute_descent:
-    acceleration = acceleration  # Get acceleration from IMU
+    # Get average acceleration from x,y and z accel from IMU
+    acceleration = (imu_data['x_accelerometer'] + imu_data['y_accelerometer'] + imu_data['accelerometer'])/3
     if acceleration <= STOPPED_ACCELERATION:
-        time.sleep(10)
+        time.sleep(CHUTE_DESCENT_WAIT)
         if acceleration <= STOPPED_ACCELERATION:
             chute_descent = False
             landing = True
             break
     else:  # We did not trigger next stage, read/write data
-        acceleration -= 1  # Remove
         time.sleep(WAIT)
 
 while landing:
