@@ -365,7 +365,7 @@ while ballistic_descent:
 
 while chute_descent:
     # Get average acceleration from x,y and z accel from IMU
-    acceleration = (imu_data['x_accelerometer'] + imu_data['y_accelerometer'] + imu_data['accelerometer'])/3
+    acceleration = (imu_data['x_accelerometer'] + imu_data['y_accelerometer'] + imu_data['z_accelerometer'])/3
     if acceleration <= STOPPED_ACCELERATION:
         time.sleep(CHUTE_DESCENT_WAIT)
         if acceleration <= STOPPED_ACCELERATION:
