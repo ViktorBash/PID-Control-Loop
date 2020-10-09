@@ -234,6 +234,34 @@ while power_flight:
             "temperature": bmp.temperature,
             "altitude": bmp.altitude,
         }
+
+        # Get timestamp for CSV file
+        timestamp = datetime.now()
+
+        # Write all the data to the CSV file
+        write_data_to_csv([
+            timestamp,
+            imu_data['heading'],
+            imu_data['roll'],
+            imu_data['pitch'],
+            imu_data['sys'],
+            imu_data['gyro'],
+            imu_data['acceleration'],
+            imu_data['mag'],
+            imu_data['x_quaternion'],
+            imu_data['y_quaternion'],
+            imu_data['z_quaternion'],
+            imu_data['w_quaternion'],
+            imu_data['x_accelerometer'],
+            imu_data['y_accelerometer'],
+            imu_data['z_accelerometer'],
+            imu_data['x_gravity'],
+            imu_data['y_gravity'],
+            imu_data['z_gravity'],
+            barometric_dict['pressure'],
+            barometric_dict['temperature'],
+            barometric_dict['altitude'],
+        ], csv_number)
         time.sleep(SLEEP)
 
 
@@ -246,6 +274,45 @@ while unpowered_flight:
         ballistic_descent = True
         break
     else:  # We did not trigger next stage, read/write data
+        imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
+        imu_data['sys'], imu_data['gyro'], imu_data['acceleration'], imu_data['mag'] = bno.get_calibration_status()
+        imu_data['x_quaternion'], imu_data['y_quaternion'], imu_data['z_quaternion'], imu_data[
+            'w_quaternion'] = bno.read_quaternion()
+        imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
+        imu_data['x_gravity'], imu_data['y_gravity'], imu_data['z_gravity'] = bno.read_gravity()
+        barometric_dict = {
+            "pressure": bmp.pressure,
+            "temperature": bmp.temperature,
+            "altitude": bmp.altitude,
+        }
+
+        # Get timestamp for CSV file
+        timestamp = datetime.now()
+
+        # Write all the data to the CSV file
+        write_data_to_csv([
+            timestamp,
+            imu_data['heading'],
+            imu_data['roll'],
+            imu_data['pitch'],
+            imu_data['sys'],
+            imu_data['gyro'],
+            imu_data['acceleration'],
+            imu_data['mag'],
+            imu_data['x_quaternion'],
+            imu_data['y_quaternion'],
+            imu_data['z_quaternion'],
+            imu_data['w_quaternion'],
+            imu_data['x_accelerometer'],
+            imu_data['y_accelerometer'],
+            imu_data['z_accelerometer'],
+            imu_data['x_gravity'],
+            imu_data['y_gravity'],
+            imu_data['z_gravity'],
+            barometric_dict['pressure'],
+            barometric_dict['temperature'],
+            barometric_dict['altitude'],
+        ], csv_number)
         time.sleep(SLEEP)
 
 while ballistic_descent:
@@ -255,7 +322,46 @@ while ballistic_descent:
         chute_descent = True
         break
     else:  # We did not trigger next stage, read/write data
-        time.sleep(WAIT)
+        imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
+        imu_data['sys'], imu_data['gyro'], imu_data['acceleration'], imu_data['mag'] = bno.get_calibration_status()
+        imu_data['x_quaternion'], imu_data['y_quaternion'], imu_data['z_quaternion'], imu_data[
+            'w_quaternion'] = bno.read_quaternion()
+        imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
+        imu_data['x_gravity'], imu_data['y_gravity'], imu_data['z_gravity'] = bno.read_gravity()
+        barometric_dict = {
+            "pressure": bmp.pressure,
+            "temperature": bmp.temperature,
+            "altitude": bmp.altitude,
+        }
+
+        # Get timestamp for CSV file
+        timestamp = datetime.now()
+
+        # Write all the data to the CSV file
+        write_data_to_csv([
+            timestamp,
+            imu_data['heading'],
+            imu_data['roll'],
+            imu_data['pitch'],
+            imu_data['sys'],
+            imu_data['gyro'],
+            imu_data['acceleration'],
+            imu_data['mag'],
+            imu_data['x_quaternion'],
+            imu_data['y_quaternion'],
+            imu_data['z_quaternion'],
+            imu_data['w_quaternion'],
+            imu_data['x_accelerometer'],
+            imu_data['y_accelerometer'],
+            imu_data['z_accelerometer'],
+            imu_data['x_gravity'],
+            imu_data['y_gravity'],
+            imu_data['z_gravity'],
+            barometric_dict['pressure'],
+            barometric_dict['temperature'],
+            barometric_dict['altitude'],
+        ], csv_number)
+        time.sleep(SLEEP)
 
 while chute_descent:
     # Get average acceleration from x,y and z accel from IMU
@@ -267,7 +373,46 @@ while chute_descent:
             landing = True
             break
     else:  # We did not trigger next stage, read/write data
-        time.sleep(WAIT)
+        imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
+        imu_data['sys'], imu_data['gyro'], imu_data['acceleration'], imu_data['mag'] = bno.get_calibration_status()
+        imu_data['x_quaternion'], imu_data['y_quaternion'], imu_data['z_quaternion'], imu_data[
+            'w_quaternion'] = bno.read_quaternion()
+        imu_data['x_accelerometer'], imu_data['y_accelerometer'], imu_data['z_accelerometer'] = bno.read_accelerometer()
+        imu_data['x_gravity'], imu_data['y_gravity'], imu_data['z_gravity'] = bno.read_gravity()
+        barometric_dict = {
+            "pressure": bmp.pressure,
+            "temperature": bmp.temperature,
+            "altitude": bmp.altitude,
+        }
+
+        # Get timestamp for CSV file
+        timestamp = datetime.now()
+
+        # Write all the data to the CSV file
+        write_data_to_csv([
+            timestamp,
+            imu_data['heading'],
+            imu_data['roll'],
+            imu_data['pitch'],
+            imu_data['sys'],
+            imu_data['gyro'],
+            imu_data['acceleration'],
+            imu_data['mag'],
+            imu_data['x_quaternion'],
+            imu_data['y_quaternion'],
+            imu_data['z_quaternion'],
+            imu_data['w_quaternion'],
+            imu_data['x_accelerometer'],
+            imu_data['y_accelerometer'],
+            imu_data['z_accelerometer'],
+            imu_data['x_gravity'],
+            imu_data['y_gravity'],
+            imu_data['z_gravity'],
+            barometric_dict['pressure'],
+            barometric_dict['temperature'],
+            barometric_dict['altitude'],
+        ], csv_number)
+        time.sleep(SLEEP)
 
 while landing:
     landing = False  # Remove
