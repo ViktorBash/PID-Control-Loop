@@ -23,4 +23,10 @@ def move_servo_2(angle):
 
 # For testing purposes
 if __name__ == "__main__":
-    pass
+    while True:
+        move_servo_1(20)
+        move_servo_2(-20)
+        time.sleep(1)
+        move_servo_1(-20)
+        move_servo_2(20)
+        time.sleep(1)

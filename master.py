@@ -47,6 +47,8 @@ from datetime import datetime
 
 import RPi.GPIO as GPIO
 
+import servo_control
+
 
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
 def find_update_csv_number():
@@ -262,6 +264,11 @@ while power_flight:
             barometric_dict['temperature'],
             barometric_dict['altitude'],
         ], csv_number)
+
+        # Code to test out the servo
+        servo_control.move_servo_2(25)
+        servo_control.move_servo_1(-25)
+
         time.sleep(SLEEP)
 
 
@@ -419,4 +426,6 @@ while chute_descent:
 
 while landing:
     landing = False  # Remove
-
+    # Setting the servos back to 0 degrees
+    servo_control.move_servo_2(0)
+    servo_control.move_servo_1(0)
