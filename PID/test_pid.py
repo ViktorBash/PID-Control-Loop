@@ -2,7 +2,7 @@
 Will test pid here
 """
 
-from PID import PID
+from pid_control import PID
 import time
 import matplotlib.pyplot as plt
 import numpy as np
@@ -24,7 +24,7 @@ def test_pid(P=0.2, I=0, D=0):
             time.sleep(0.02)
         ---
     """
-    pid = PID.PID(P, I, D)
+    pid = PID(P, I, D)
 
     pid.SetPoint = 1
     pid.setSampleTime(0.01)
