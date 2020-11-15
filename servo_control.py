@@ -14,12 +14,24 @@ servo1 = AngularServo(12, min_angle=-90, max_angle=90)
 # servo2 = Servo(19)
 servo2 = AngularServo(19, min_angle=-90, max_angle=90)
 
+# How much the servo will be able to move
+top_limit = 15
+bottom_limit = -15
+
 
 def move_servo_1(angle):
+    if angle > top_limit:
+        angle = top_limit
+    if angle < bottom_limit:
+        angle = bottom_limit
     servo1.angle = angle
 
 
 def move_servo_2(angle):
+    if angle > top_limit:
+        angle = top_limit
+    if angle < bottom_limit:
+        angle = bottom_limit
     servo2.angle = angle
 
 
