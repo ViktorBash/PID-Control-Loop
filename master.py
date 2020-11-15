@@ -115,6 +115,9 @@ bno.set_calibration(bno.get_calibration())
 
 # Will be useful for the PID loop because the BNO does not start at 0 degrees .
 heading_initial, roll_initial, pitch_initial = bno.read_euler()
+time.sleep(1)
+heading_initial, roll_initial, pitch_initial = bno.read_euler()
+
 
 # CONFIGURATION OF BAROMETRIC CONTROLLER
 i2c = busio.I2C(board.SCL, board.SDA)
