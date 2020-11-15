@@ -251,7 +251,6 @@ while power_flight:
             print("MOVING TO UNPOWERED FLIGHT FROM POWER FLIGHT")
             break
         else:
-            time.sleep(SLEEP)
             continue
     else:  # We did not trigger next stage, read/write data
         imu_data['heading'], imu_data['roll'], imu_data['pitch'] = bno.read_euler()
@@ -299,12 +298,9 @@ while power_flight:
         pid_interact_x()
         pid_interact_y()
 
-        time.sleep(SLEEP)
-
 
 while unpowered_flight:
     altitude = 100  # Get altitude from barometer
-    time.sleep(WAIT)
     cur_altitude = 90  # Get altitude from barometer
     if cur_altitude < altitude:  # We are falling now if true
         unpowered_flight = False
@@ -353,7 +349,6 @@ while unpowered_flight:
         ], csv_number)
         pid_interact_x()
         pid_interact_y()
-        time.sleep(SLEEP)
 
 while ballistic_descent:
     para_altitude = 10  # Get altitude from barometer
@@ -404,12 +399,12 @@ while ballistic_descent:
         ], csv_number)
         pid_interact_x()
         pid_interact_y()
-        time.sleep(SLEEP)
 
 while chute_descent:
     # Get average acceleration from x,y and z accel from IMU
     acceleration = (imu_data['x_accelerometer'] + imu_data['y_accelerometer'] + imu_data['z_accelerometer'])/3
     if acceleration <= STOPPED_ACCELERATION:
+        # TODO: Get acceleration level again before comparing
         time.sleep(CHUTE_DESCENT_WAIT)
         if acceleration <= STOPPED_ACCELERATION:
             chute_descent = False
@@ -458,7 +453,6 @@ while chute_descent:
         ], csv_number)
         pid_interact_x()
         pid_interact_y()
-        time.sleep(SLEEP)
 
 while landing:
     landing = False  # Remove
