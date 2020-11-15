@@ -191,7 +191,7 @@ pid_y = PID(proportional, integral, derivative, setpoint=setpoint)
 def pid_interact_x():
     error_x = imu_data['pitch'] - setpoint - pitch_initial
     output_x = pid_x(error_x)
-    print("VALUES, HEADING: " + str(imu_data['heading']) + ", ROLL: " + str(imu_data['roll']) + " , PITCH: " + str(imu_data['pitch']))
+    print("VALUES, HEADING: " + str(imu_data['heading'] - heading_initial) + ", ROLL: " + str(imu_data['roll'] - roll_initial) + " , PITCH: " + str(imu_data['pitch'] - pitch_initial))
     print("OUTPUT_X: " + str(output_x))
     servo_control.move_servo_1(output_x)
 
