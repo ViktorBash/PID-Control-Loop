@@ -114,9 +114,9 @@ print(bno.get_calibration_status())
 bno.set_calibration(bno.get_calibration())
 
 # Will be useful for the PID loop because the BNO does not start at 0 degrees .
-heading_initial, roll_initial, pitch_initial = bno.read_euler()
+x_quat_initial, y_quat_initial, z_quat_initial, w_quat_initial = bno.read_quaternion()
 time.sleep(1)
-heading_initial, roll_initial, pitch_initial = bno.read_euler()
+x_quat_initial, y_quat_initial, z_quat_initial, w_quat_initial = bno.read_quaternion()
 
 
 # CONFIGURATION OF BAROMETRIC CONTROLLER
@@ -196,16 +196,23 @@ pid_y = PID(proportional, integral, derivative, setpoint=setpoint)
 # Pitch: x-axis
 # Roll: y-axis
 def pid_interact_x():
-    error_x = imu_data['pitch'] - setpoint - pitch_initial
+    error_x = imu_data['x_quaternion'] - x_quat_initial - setpoint
     output_x = pid_x(error_x)
-    print("ACTUAL VALUES, HEADING: " + str(imu_data['heading']) + ", ROLL: " + str(imu_data['roll']) + " , PITCH: " + str(imu_data['pitch']))
-    print("TRUE VALUES, HEADING: " + str(imu_data['heading'] - heading_initial) + ", ROLL: " + str(imu_data['roll'] - roll_initial) + " , PITCH: " + str(imu_data['pitch'] - pitch_initial))
+    print("ACTUAL VALUES, X-QUAT: " +
+          str(imu_data['x_quaternion']) +
+          ", Y-QUAT: " + str(imu_data['y_quaternion']) +
+          ", Z-QUAT: " + str(imu_data['z_quaternion']) +
+          ", W-QUAT: " + str(imu_data['w_quaternion']))
+    print("TRUE VALUES, X-QUAT: " + str(imu_data['x_quaternion'] - x_quat_initial) +
+          ", Y-QUAT: " + str(imu_data['y_quaternion'] - y_quat_initial) +
+          " , Z-QUAT: " + str(imu_data['z_quaternion'] - z_quat_initial) +
+          ", W-QUAT: " + str(imu_data['w_quaternion'] - w_quat_initial))
     print("OUTPUT_X: " + str(output_x))
     servo_control.move_servo_1(output_x)
 
 
 def pid_interact_y():
-    error_y = imu_data['roll'] - setpoint - roll_initial
+    error_y = imu_data['y_quat'] - y_quat_initial - setpoint
     output_y = pid_y(error_y)
     print("OUTPUT_Y: " + str(output_y))
     servo_control.move_servo_2(output_y)
