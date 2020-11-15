@@ -170,11 +170,12 @@ def get_average_acceleration():
         pass
     return
 
+
 # PID loop setup
-proportional = 1
-integral = 0.1
-derivative = 0.05
-setpoint = 1
+proportional = -0.0206310292526927
+integral = -0.000965837060148333
+derivative = -0.108213442401603
+setpoint = 0
 
 pid_x = PID(proportional, integral, derivative, setpoint=setpoint)
 pid_y = PID(proportional, integral, derivative, setpoint=setpoint)
