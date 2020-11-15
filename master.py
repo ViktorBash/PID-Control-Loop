@@ -36,6 +36,8 @@ import board
 import busio
 import adafruit_bmp3xx
 
+from simple_pid import PID
+
 from data import write_data_to_csv
 
 import sys
@@ -168,6 +170,32 @@ def get_average_acceleration():
         pass
     return
 
+# PID loop setup
+proportional = 1
+integral = 0.1
+derivative = 0.05
+setpoint = 1
+
+pid_x = PID(proportional, integral, derivative, setpoint=setpoint)
+pid_y = PID(proportional, integral, derivative, setpoint=setpoint)
+
+
+# Things to change:
+#     Use of heading, pitch, roll
+#     Servo1 and servo2
+#     PID and setpoint values
+# Function for interacting with the PID loop
+def pid_interact_x():
+    error_x = imu_data['pitch'] - setpoint
+    output_x = pid_x(error_x)
+    servo_control.move_servo_1(output_x)
+
+
+def pid_interact_y():
+    error_y = imu_data['roll'] - setpoint
+    output_y = pid_y(error_y)
+    servo_control.move_servo_2(output_y)
+
 
 # Setup for the button that will arm the rocket
 # button_pin = 13
@@ -266,8 +294,10 @@ while power_flight:
         ], csv_number)
 
         # Code to test out the servo
-        servo_control.move_servo_2(25)
-        servo_control.move_servo_1(-25)
+        # servo_control.move_servo_2(25)
+        # servo_control.move_servo_1(-25)
+        pid_interact_x()
+        pid_interact_y()
 
         time.sleep(SLEEP)
 
@@ -321,6 +351,8 @@ while unpowered_flight:
             barometric_dict['temperature'],
             barometric_dict['altitude'],
         ], csv_number)
+        pid_interact_x()
+        pid_interact_y()
         time.sleep(SLEEP)
 
 while ballistic_descent:
@@ -370,6 +402,8 @@ while ballistic_descent:
             barometric_dict['temperature'],
             barometric_dict['altitude'],
         ], csv_number)
+        pid_interact_x()
+        pid_interact_y()
         time.sleep(SLEEP)
 
 while chute_descent:
@@ -422,6 +456,8 @@ while chute_descent:
             barometric_dict['temperature'],
             barometric_dict['altitude'],
         ], csv_number)
+        pid_interact_x()
+        pid_interact_y()
         time.sleep(SLEEP)
 
 while landing:
