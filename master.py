@@ -113,6 +113,8 @@ print(bno.get_calibration_status())
 
 bno.set_calibration(bno.get_calibration())
 
+# Will be useful for the PID loop because the BNO does not start at 0 degrees .
+heading_initial, roll_initial, pitch_initial = bno.read_euler()
 
 # CONFIGURATION OF BAROMETRIC CONTROLLER
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -187,7 +189,7 @@ pid_y = PID(proportional, integral, derivative, setpoint=setpoint)
 #     PID and setpoint values
 # Function for interacting with the PID loop
 def pid_interact_x():
-    error_x = imu_data['pitch'] - setpoint
+    error_x = imu_data['pitch'] - setpoint - pitch_initial
     output_x = pid_x(error_x)
     print("VALUES, HEADING: " + str(imu_data['heading']) + ", ROLL: " + str(imu_data['roll']) + " , PITCH: " + str(imu_data['pitch']))
     print("OUTPUT_X: " + str(output_x))
@@ -195,7 +197,7 @@ def pid_interact_x():
 
 
 def pid_interact_y():
-    error_y = imu_data['roll'] - setpoint
+    error_y = imu_data['roll'] - setpoint - roll_initial
     output_y = pid_y(error_y)
     print("OUTPUT_Y: " + str(output_y))
     servo_control.move_servo_2(output_y)
