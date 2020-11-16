@@ -51,6 +51,8 @@ import RPi.GPIO as GPIO
 
 import servo_control
 
+import math
+
 
 # Get the current csv_number and update the csv_number to write to the correct filename for no data loss
 def find_update_csv_number():
@@ -195,25 +197,44 @@ pid_y = PID(proportional, integral, derivative, setpoint=setpoint)
 # Heading: z-axis
 # Pitch: x-axis
 # Roll: y-axis
+# Will take in quaternion angles and then create euler angles
+def quaternion_to_euler_X():
+    w = imu_data['w_quaternion'] - w_quat_initial
+    x = imu_data['x_quaternion'] - x_quat_initial
+    y = imu_data['y_quaternion'] - y_quat_initial
+    z = imu_data['z_quaternion'] - z_quat_initial
+
+    t0 = +2.0 * (w * x + y * z)
+    t1 = +1.0 - 2.0 * (x * x + y * y)
+    X = math.degrees(math.atan2(t0, t1))
+    return X
+
+
+def quaternion_to_euler_Y():
+    w = imu_data['w_quaternion'] - w_quat_initial
+    x = imu_data['x_quaternion'] - x_quat_initial
+    y = imu_data['y_quaternion'] - y_quat_initial
+    z = imu_data['z_quaternion'] - z_quat_initial
+
+    t2 = +2.0 * (w * y - z * x)
+    t2 = +1.0 if t2 > +1.0 else t2
+    t2 = -1.0 if t2 < -1.0 else t2
+    Y = math.degrees(math.asin(t2))
+    return Y
+
+
 def pid_interact_x():
-    error_x = imu_data['x_quaternion'] - x_quat_initial - setpoint
-    output_x = pid_x(error_x)
-    print("ACTUAL VALUES, X-QUAT: " +
-          str(imu_data['x_quaternion']) +
-          ", Y-QUAT: " + str(imu_data['y_quaternion']) +
-          ", Z-QUAT: " + str(imu_data['z_quaternion']) +
-          ", W-QUAT: " + str(imu_data['w_quaternion']))
-    print("TRUE VALUES, X-QUAT: " + str(imu_data['x_quaternion'] - x_quat_initial) +
-          ", Y-QUAT: " + str(imu_data['y_quaternion'] - y_quat_initial) +
-          " , Z-QUAT: " + str(imu_data['z_quaternion'] - z_quat_initial) +
-          ", W-QUAT: " + str(imu_data['w_quaternion'] - w_quat_initial))
+    input_x = quaternion_to_euler_X()  # Is the X euler angle
+    output_x = pid_x(input_x)  # Is a degree for the motor to move
+    print("EULER X ANGLE: " + str(input_x))
     print("OUTPUT_X: " + str(output_x))
     servo_control.move_servo_1(output_x)
 
 
 def pid_interact_y():
-    error_y = imu_data['y_quaternion'] - y_quat_initial - setpoint
-    output_y = pid_y(error_y)
+    input_y = quaternion_to_euler_Y()  # Is the Y euler angle
+    output_y = pid_y(input_y)  # Is a degree for the motor to move
+    print("EULER Y ANGLE: " + str(input_y))
     print("OUTPUT_Y: " + str(output_y))
     servo_control.move_servo_2(output_y)
 
