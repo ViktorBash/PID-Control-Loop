@@ -23,8 +23,8 @@ if __name__ == "__main__":
     # 1500: 90 Degrees
     # 1 Degree Addition = 1000/90, aka: 11.1 recurring
     print("0 Degrees ")
-    pwm1.set_servo_pulsewidth(servo1, 500)
-    pwm2.set_servo_pulsewidth(servo2, 500)
+    pwm1.set_servo_pulsewidth(servo1, 500.1)
+    pwm2.set_servo_pulsewidth(servo2, 500.1)
     time.sleep(3)
 
     print("15 Degrees")
@@ -33,8 +33,8 @@ if __name__ == "__main__":
     time.sleep(3)
 
     print("0 Degrees ")
-    pwm1.set_servo_pulsewidth(servo1, 500)
-    pwm2.set_servo_pulsewidth(servo2, 500)
+    pwm1.set_servo_pulsewidth(servo1, 500.1)
+    pwm2.set_servo_pulsewidth(servo2, 500.1)
 
 
     # Turning off the servo
