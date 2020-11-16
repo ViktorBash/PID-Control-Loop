@@ -249,8 +249,8 @@ def quaternion_to_euler():
 def pid_interact_x():
     heading, pitch, roll = quaternion_to_euler()
     output_x = pid_x(pitch)
-    print("EULER X ANGLE: " + pitch)
-    print("OUTPUT X: " + output_x)
+    print("EULER X ANGLE: " + str(pitch))
+    print("OUTPUT X: " + str(output_x))
     servo_control.move_servo_1(output_x)
 
     # input_x = quaternion_to_euler_X()  # Is the X euler angle
@@ -263,8 +263,8 @@ def pid_interact_x():
 def pid_interact_y():
     heading, pitch, roll = quaternion_to_euler()
     output_y = pid_y(roll)
-    print("EULER Y ANGLE: " + roll)
-    print("OUTPUT Y: " + output_y)
+    print("EULER Y ANGLE: " + str(roll))
+    print("OUTPUT Y: " + str(output_y))
     # input_y = quaternion_to_euler_Y()  # Is the Y euler angle
     # output_y = pid_y(input_y)  # Is a degree for the motor to move
     # print("EULER Y ANGLE: " + str(input_y))
