@@ -212,7 +212,7 @@ def pid_interact_x():
 
 
 def pid_interact_y():
-    error_y = imu_data['y_quat'] - y_quat_initial - setpoint
+    error_y = imu_data['y_quaternion'] - y_quat_initial - setpoint
     output_y = pid_y(error_y)
     print("OUTPUT_Y: " + str(output_y))
     servo_control.move_servo_2(output_y)
