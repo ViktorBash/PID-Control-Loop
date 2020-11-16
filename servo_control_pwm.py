@@ -30,9 +30,10 @@ if __name__ == "__main__":
     print("15 Degrees")
     pwm1.set_servo_pulsewidth(servo1, 500 + (1000/90 * 15))
     pwm2.set_servo_pulsewidth(servo2, 500 + (1000/90 * 15))
+    time.sleep(3)
 
     # Turning off the servo
-    pwm1.set_PWM_dutycycle(servo1, 0)
-    pwm1.set_PWM_frequency(servo1, 0)
-    pwm2.set_PWM_dutycycle(servo2, 0)
-    pwm2.set_PWM_frequency(servo2, 0)
+    # pwm1.set_PWM_dutycycle(servo1, 0)
+    # pwm1.set_PWM_frequency(servo1, 0)
+    # pwm2.set_PWM_dutycycle(servo2, 0)
+    # pwm2.set_PWM_frequency(servo2, 0)
