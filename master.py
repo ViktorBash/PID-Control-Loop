@@ -198,45 +198,78 @@ pid_y = PID(proportional, integral, derivative, setpoint=setpoint)
 # Pitch: x-axis
 # Roll: y-axis
 # Will take in quaternion angles and then create euler angles
-def quaternion_to_euler_X():
-    w = imu_data['w_quaternion'] - w_quat_initial
-    x = imu_data['x_quaternion'] - x_quat_initial
-    y = imu_data['y_quaternion'] - y_quat_initial
-    z = imu_data['z_quaternion'] - z_quat_initial
+# def quaternion_to_euler_X():
+#     w = imu_data['w_quaternion'] - w_quat_initial
+#     x = imu_data['x_quaternion'] - x_quat_initial
+#     y = imu_data['y_quaternion'] - y_quat_initial
+#     z = imu_data['z_quaternion'] - z_quat_initial
+#
+#     t0 = +2.0 * (w * x + y * z)
+#     t1 = +1.0 - 2.0 * (x * x + y * y)
+#     X = math.degrees(math.atan2(t0, t1))
+#     return X
+#
+#
+# def quaternion_to_euler_Y():
+#     w = imu_data['w_quaternion'] - w_quat_initial
+#     x = imu_data['x_quaternion'] - x_quat_initial
+#     y = imu_data['y_quaternion'] - y_quat_initial
+#     z = imu_data['z_quaternion'] - z_quat_initial
+#
+#     t2 = +2.0 * (w * y - z * x)
+#     t2 = +1.0 if t2 > +1.0 else t2
+#     t2 = -1.0 if t2 < -1.0 else t2
+#     Y = math.degrees(math.asin(t2))
+#     return Y
 
+
+# takes in a list of quaternions (x, y, z, w)
+def quaternion_to_euler():
+    q = [
+        imu_data['x_quaternion'] - x_quat_initial,
+        imu_data['y_quaternion'] - y_quat_initial,
+        imu_data['z_quaternion'] - z_quat_initial,
+        imu_data['w_quaternion'] - w_quat_initial
+    ]
+
+    (x, y, z, w) = (q[0], q[1], q[2], q[3])
     t0 = +2.0 * (w * x + y * z)
     t1 = +1.0 - 2.0 * (x * x + y * y)
-    X = math.degrees(math.atan2(t0, t1))
-    return X
-
-
-def quaternion_to_euler_Y():
-    w = imu_data['w_quaternion'] - w_quat_initial
-    x = imu_data['x_quaternion'] - x_quat_initial
-    y = imu_data['y_quaternion'] - y_quat_initial
-    z = imu_data['z_quaternion'] - z_quat_initial
-
+    roll = math.atan2(t0, t1)
     t2 = +2.0 * (w * y - z * x)
     t2 = +1.0 if t2 > +1.0 else t2
     t2 = -1.0 if t2 < -1.0 else t2
-    Y = math.degrees(math.asin(t2))
-    return Y
+    pitch = math.asin(t2)
+    t3 = +2.0 * (w * z + x * y)
+    t4 = +1.0 - 2.0 * (y * y + z * z)
+    heading = math.atan2(t3, t4)
+    return [heading, pitch, roll]
 
 
 def pid_interact_x():
-    input_x = quaternion_to_euler_X()  # Is the X euler angle
-    output_x = pid_x(input_x)  # Is a degree for the motor to move
-    print("EULER X ANGLE: " + str(input_x))
-    print("OUTPUT_X: " + str(output_x))
+    heading, pitch, roll = quaternion_to_euler()
+    output_x = pid_x(pitch)
+    print("EULER X ANGLE: " + pitch)
+    print("OUTPUT X: " + output_x)
     servo_control.move_servo_1(output_x)
+
+    # input_x = quaternion_to_euler_X()  # Is the X euler angle
+    # output_x = pid_x(input_x)  # Is a degree for the motor to move
+    # print("EULER X ANGLE: " + str(input_x))
+    # print("OUTPUT_X: " + str(output_x))
+    # servo_control.move_servo_1(output_x)
 
 
 def pid_interact_y():
-    input_y = quaternion_to_euler_Y()  # Is the Y euler angle
-    output_y = pid_y(input_y)  # Is a degree for the motor to move
-    print("EULER Y ANGLE: " + str(input_y))
-    print("OUTPUT_Y: " + str(output_y))
-    servo_control.move_servo_2(output_y)
+    heading, pitch, roll = quaternion_to_euler()
+    output_y = pid_y(roll)
+    print("EULER Y ANGLE: " + roll)
+    print("OUTPUT Y: " + output_y)
+    # input_y = quaternion_to_euler_Y()  # Is the Y euler angle
+    # output_y = pid_y(input_y)  # Is a degree for the motor to move
+    # print("EULER Y ANGLE: " + str(input_y))
+    # print("OUTPUT_Y: " + str(output_y))
+    # servo_control.move_servo_2(output_y)
 
 
 # Setup for the button that will arm the rocket
