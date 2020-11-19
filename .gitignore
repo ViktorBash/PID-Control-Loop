@@ -130,3 +130,7 @@ dmypy.json
 
 # IDE Files
 .idea/
+
+# Files from matlab
+.pdf
+.png
