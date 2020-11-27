@@ -2,7 +2,7 @@
 Will test pid here
 """
 
-from pid_control import PID
+from pid_loop import PID
 import time
 import matplotlib.pyplot as plt
 import numpy as np
