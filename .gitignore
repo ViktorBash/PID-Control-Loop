@@ -132,5 +132,5 @@ dmypy.json
 .idea/
 
 # Files from matlab
-.pdf
-.png
+*.pdf
+*.png
